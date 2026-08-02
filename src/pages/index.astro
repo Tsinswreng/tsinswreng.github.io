@@ -1,0 +1,51 @@
+---
+const articleUrl = "/clean-disk.html";
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Tsinswreng 的網站</title>
+    <meta name="description" content="文章、工具與專案整理。" />
+    <style>
+      :root {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #1f2937;
+        background: #f3f4f6;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; }
+      header { padding: 3rem 1.5rem 2rem; color: white; background: linear-gradient(135deg, #1f2937, #374151); }
+      header > div, main { max-width: 1100px; margin: 0 auto; }
+      h1 { margin: 0 0 .5rem; font-size: clamp(2rem, 5vw, 3.5rem); }
+      header p { margin: 0; color: #d1d5db; }
+      main { padding: 2rem 1.5rem 4rem; }
+      .card { overflow: hidden; border: 1px solid #e5e7eb; border-radius: 16px; background: white; box-shadow: 0 12px 30px rgb(15 23 42 / 8%); }
+      .card-header { padding: 1.5rem; border-bottom: 1px solid #e5e7eb; }
+      .card-header h2 { margin: 0 0 .35rem; }
+      .card-header p { margin: 0; color: #6b7280; }
+      iframe { display: block; width: 100%; min-height: 75vh; border: 0; background: white; }
+      .open-link { display: inline-block; margin-top: 1rem; color: #2563eb; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Tsinswreng 的網站</h1>
+        <p>文章、工具與專案整理。</p>
+      </div>
+    </header>
+    <main>
+      <section class="card">
+        <div class="card-header">
+          <h2>用目錄鏈接讓 C 盤騰出空間</h2>
+          <p>第一篇試放文章：由現有 HTML 嵌入 Astro 頁面。</p>
+          <a class="open-link" href={articleUrl}>單獨打開文章</a>
+        </div>
+        <iframe title="用目錄鏈接讓 C 盤騰出空間" src={articleUrl}></iframe>
+      </section>
+    </main>
+  </body>
+</html>
