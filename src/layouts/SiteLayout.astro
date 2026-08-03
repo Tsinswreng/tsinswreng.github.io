@@ -1,0 +1,105 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Tsinswreng 的網站",
+  description = "文章、工具與專案整理。",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <style is:global>
+      :root {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #1f2937;
+        background: #f3f4f6;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; }
+      a { color: inherit; }
+      .site-nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid rgb(255 255 255 / 12%);
+        background: rgb(17 24 39 / 94%);
+        color: #e5e7eb;
+        backdrop-filter: blur(12px);
+      }
+      .site-nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        max-width: 1100px;
+        min-height: 3.5rem;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+      .brand { font-weight: 700; text-decoration: none; white-space: nowrap; }
+      .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+      .nav-links a { color: #d1d5db; text-decoration: none; font-size: .95rem; }
+      .nav-links a:hover, .nav-links a:focus-visible { color: white; }
+      .site-hero { padding: 3rem 1.5rem 2.25rem; color: white; background: linear-gradient(135deg, #1f2937, #374151); }
+      .site-hero-inner { max-width: 1100px; margin: 0 auto; }
+      .site-hero h1 { margin: 0 0 .5rem; font-size: clamp(2rem, 5vw, 3.5rem); }
+      .site-hero p { margin: 0; color: #d1d5db; }
+      .site-main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+      .site-footer { padding: 2rem 1.5rem; color: #6b7280; text-align: center; font-size: .9rem; }
+      .site-footer p { max-width: 1100px; margin: 0 auto; }
+      .article-shell { overflow: hidden; border: 1px solid #e5e7eb; border-radius: 16px; background: white; box-shadow: 0 12px 30px rgb(15 23 42 / 8%); }
+      .article-heading { padding: 1.5rem; border-bottom: 1px solid #e5e7eb; }
+      .article-heading h2 { margin: 0 0 .35rem; }
+      .article-heading p { margin: 0; color: #6b7280; }
+      .article-body { overflow-x: auto; padding: clamp(1.25rem, 4vw, 3rem); background: white; }
+      .article-body > :first-child { margin-top: 0; }
+      .article-body img { max-width: 100%; height: auto; }
+      .article-body pre { overflow-x: auto; padding: 1rem; border-radius: 8px; background: #111827; color: #f9fafb; }
+      .article-body code { overflow-wrap: anywhere; }
+      .home-card { padding: 1.5rem; border: 1px solid #e5e7eb; border-radius: 16px; background: white; box-shadow: 0 12px 30px rgb(15 23 42 / 8%); }
+      .home-card h2 { margin-top: 0; }
+      .home-card p { color: #6b7280; }
+      .button-link { display: inline-block; padding: .65rem 1rem; border-radius: 8px; background: #2563eb; color: white; text-decoration: none; }
+      .button-link:hover, .button-link:focus-visible { background: #1d4ed8; }
+      @media (max-width: 640px) {
+        .site-nav-inner { align-items: flex-start; flex-direction: column; padding-top: .75rem; padding-bottom: .75rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="全站導航">
+      <div class="site-nav-inner">
+        <a class="brand" href="/">Tsinswreng</a>
+        <div class="nav-links">
+          <a href="/">首頁</a>
+          <a href="/#articles">文章</a>
+          <a href="/#projects">專案</a>
+          <a href="/#tools">工具</a>
+          <a href="/#about">關於</a>
+        </div>
+      </div>
+    </nav>
+    <header class="site-hero">
+      <div class="site-hero-inner">
+        <h1>Tsinswreng 的網站</h1>
+        <p>文章、工具與專案整理。</p>
+      </div>
+    </header>
+    <main class="site-main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>© {new Date().getFullYear()} Tsinswreng</p>
+    </footer>
+  </body>
+</html>
