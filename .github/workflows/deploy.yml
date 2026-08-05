@@ -3,7 +3,7 @@
 # 它不會在你的電腦上執行；只有程式碼推送到 GitHub 後才會在 GitHub 伺服器上執行。
 
 # 工作流程在 GitHub Actions 頁面顯示的名稱。
-name: Deploy Astro site to GitHub Pages
+name: Deploy Vue site to GitHub Pages
 
 # 觸發工作流程的事件。
 on:
@@ -43,12 +43,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 安裝 Node.js。Astro 與 npm 指令都需要 Node.js 才能執行。
+      # 安裝 Node.js。Vue、Vite 與 npm 指令都需要 Node.js 才能執行。
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          # 固定使用 Node.js 22，確保 GitHub 建置環境與專案預期的版本一致。
-          node-version: 22
+          # 固定使用 Node.js 22.13；此專案所用的 Vite 與 PDF.js 都要求至少 22.13。
+          node-version: 22.13.0
           # 快取 npm 已下載的套件；下次建置可少下載一些檔案，通常會更快。
           cache: npm
 
@@ -57,9 +57,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 執行 package.json 中的 build 指令，即 `astro build`。
-      # Astro 會讀取 src/ 與 public/，並把最終靜態網站輸出到 dist/。
-      - name: Build Astro site
+      # 執行 package.json 中的 build 指令，即 `vue-tsc --noEmit && vite build`。
+      # Vue 型別檢查通過後，Vite 會將各個 Vue 頁面建置為 dist/ 中的靜態檔。
+      - name: Build Vue site
         run: npm run build
 
       # 將 dist/ 打包並交給 GitHub Pages，供下一個 deploy 工作使用。
