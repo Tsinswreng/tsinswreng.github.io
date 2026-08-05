@@ -1,0 +1,18 @@
+---
+import SiteLayout from "../../../layouts/SiteLayout.astro";
+import PdfViewer from "../../../layouts/PdfViewer.astro";
+---
+
+<SiteLayout
+  title="用目錄鏈接讓 C 盤騰出空間｜PDF 閱讀測試｜Tsinswreng"
+  description="PDF.js 閱讀器概念驗證。"
+>
+  <article class="article-shell pdf-article-shell">
+    <header class="article-heading">
+      <h2>用目錄鏈接讓 C 盤騰出空間</h2>
+      <p>PDF.js 閱讀器概念驗證。</p>
+      <p><a href="/clean-disk/">返回原 HTML 文章</a></p>
+    </header>
+    <PdfViewer pdfUrl="/clean-disk.pdf" title="用目錄鏈接讓 C 盤騰出空間" />
+  </article>
+</SiteLayout>
