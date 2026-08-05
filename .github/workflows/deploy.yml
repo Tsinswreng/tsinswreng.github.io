@@ -1,50 +1,88 @@
+# 此檔案是 GitHub Actions 的工作流程設定。
+# GitHub 讀取本檔案後，會按照下方指令在 GitHub 提供的 Linux 虛擬機中建置網站，並部署至 GitHub Pages。
+# 它不會在你的電腦上執行；只有程式碼推送到 GitHub 後才會在 GitHub 伺服器上執行。
+
+# 工作流程在 GitHub Actions 頁面顯示的名稱。
 name: Deploy Astro site to GitHub Pages
 
+# 觸發工作流程的事件。
 on:
+  # 當有人將提交 push 到 main 分支時，自動執行。
+  # 因此執行 `git push origin main` 後，GitHub 就會開始建置與部署。
   push:
     branches: [main]
+
+  # 允許你在 GitHub 網站的 Actions 頁面手動按「Run workflow」重新執行。
+  # 即使沒有新的提交，也可以用它重新部署目前 main 分支的內容。
   workflow_dispatch:
 
+# 授予此工作流程所需的 GitHub 權限。
 permissions:
+  # 允許讀取倉庫內容，讓 checkout 步驟能取得原始碼。
   contents: read
+  # 允許將建置產物發佈到 GitHub Pages。
   pages: write
+  # 允許 Actions 使用 OpenID Connect 身分驗證，供 deploy-pages 安全地部署。
   id-token: write
 
+# 控制同一時間可執行的部署數量。
 concurrency:
+  # 名為 pages 的工作流程群組；所有 Pages 部署都會互相排隊。
   group: pages
+  # 若又推送了新版，取消仍在執行的舊版部署，避免舊內容晚於新內容發佈。
   cancel-in-progress: true
 
+# 工作流程由兩個工作（job）構成：先 build，再 deploy。
 jobs:
+  # 第一個工作：將 Astro 原始碼建置成可直接給瀏覽器使用的靜態檔案。
   build:
+    # 使用 GitHub 提供、預先安裝常用工具的最新版 Ubuntu 虛擬機。
     runs-on: ubuntu-latest
     steps:
+      # 將觸發本次工作流程的倉庫提交下載到虛擬機中。
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 安裝 Node.js。Astro 與 npm 指令都需要 Node.js 才能執行。
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
+          # 固定使用 Node.js 22，確保 GitHub 建置環境與專案預期的版本一致。
           node-version: 22
+          # 快取 npm 已下載的套件；下次建置可少下載一些檔案，通常會更快。
           cache: npm
 
+      # 依 package-lock.json 精確安裝套件。
+      # `npm ci` 適合自動化環境，並會確保每次建置使用相同版本的依賴。
       - name: Install dependencies
         run: npm ci
 
+      # 執行 package.json 中的 build 指令，即 `astro build`。
+      # Astro 會讀取 src/ 與 public/，並把最終靜態網站輸出到 dist/。
       - name: Build Astro site
         run: npm run build
 
+      # 將 dist/ 打包並交給 GitHub Pages，供下一個 deploy 工作使用。
+      # artifact 可以理解為「本次建置得到、要交付部署的檔案包」。
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
+  # 第二個工作：把前一個工作產生的 dist/ 發佈到 GitHub Pages。
   deploy:
     environment:
+      # 指定 GitHub Pages 這個部署環境；可在倉庫的 Environments 頁面查看部署紀錄。
       name: github-pages
+      # 部署完成後，將實際網站網址顯示在這次部署的結果中。
       url: ${{ steps.deployment.outputs.page_url }}
+    # 部署也在獨立的 Ubuntu 虛擬機執行。
     runs-on: ubuntu-latest
+    # 必須等 build 成功完成，deploy 才能開始；若建置失敗，就不會部署。
     needs: build
     steps:
+      # 取用上一個工作上傳的 artifact，並將其正式發佈到 GitHub Pages。
+      # id 讓上方的 url 可以取得此步驟輸出的 page_url。
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
