@@ -1,19 +1,17 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import articleHtmlSource from "../../../public/clean-disk.html?raw";
-
-const articleHtml = articleHtmlSource.match(/<body[^>]*>([\s\S]*)<\/body>/i)?.[1] ?? articleHtmlSource;
+import PdfViewer from "../../layouts/PdfViewer.astro";
 ---
 
 <SiteLayout
   title="用目錄鏈接讓 C 盤騰出空間｜Tsinswreng"
   description="用目錄鏈接讓 C 盤騰出空間。"
 >
-  <article class="article-shell">
+  <article class="article-shell pdf-article-shell">
     <header class="article-heading">
       <h2>用目錄鏈接讓 C 盤騰出空間</h2>
       <p>Windows 磁碟空間整理方法。</p>
     </header>
-    <div class="article-body" set:html={articleHtml}></div>
+    <PdfViewer pdfUrl="/clean-disk.pdf" title="用目錄鏈接讓 C 盤騰出空間" />
   </article>
 </SiteLayout>

@@ -8,6 +8,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^5.13.5"
+    "astro": "^5.13.5",
+    "pdfjs-dist": "^6.2.108"
   }
 }
