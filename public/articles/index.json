@@ -1,20 +1,20 @@
 [
   {
-    "Slug": "alt-nav",
-    "Lang": "en",
-    "Title": "AltNav: Use Left Alt to Turn the Keyboard Center Area into Arrow Keys",
-    "Url": "/articles/alt-nav/en/"
+    "slug": "alt-nav",
+    "lang": "en",
+    "title": "AltNav: Use Left Alt to Turn the Keyboard Center Area into Arrow Keys",
+    "url": "/articles/alt-nav/en/"
   },
   {
-    "Slug": "alt-nav",
-    "Lang": "zh-Hans",
-    "Title": "AltNav:\u7528\u5DE6Alt\u628A\u952E\u76D8\u4E2D\u5FC3\u533A\u53D8\u6210\u65B9\u5411\u952E",
-    "Url": "/articles/alt-nav/zh-Hans/"
+    "slug": "alt-nav",
+    "lang": "zh-Hans",
+    "title": "AltNav:\u7528\u5DE6Alt\u628A\u952E\u76D8\u4E2D\u5FC3\u533A\u53D8\u6210\u65B9\u5411\u952E",
+    "url": "/articles/alt-nav/zh-Hans/"
   },
   {
-    "Slug": "alt-nav",
-    "Lang": "zh-Hant",
-    "Title": "AltNav:\u7528\u5DE6Alt\u628A\u9375\u76E4\u4E2D\u5FC3\u5340\u8B8A\u6210\u65B9\u5411\u9375",
-    "Url": "/articles/alt-nav/zh-Hant/"
+    "slug": "alt-nav",
+    "lang": "zh-Hant",
+    "title": "AltNav:\u7528\u5DE6Alt\u628A\u9375\u76E4\u4E2D\u5FC3\u5340\u8B8A\u6210\u65B9\u5411\u9375",
+    "url": "/articles/alt-nav/zh-Hant/"
   }
 ]

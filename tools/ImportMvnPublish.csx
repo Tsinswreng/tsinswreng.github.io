@@ -337,7 +337,10 @@ async Task UpdateArticleIndex(Pth ArticlesRoot, string Slug, List<PublishedDocum
 	}
 	Entries.Sort((Left, Right) => string.Compare(Left.Slug + "/" + Left.Lang, Right.Slug + "/" + Right.Lang, StringComparison.Ordinal));
 	await Mkdir(ArticlesRoot, Ct);
-	await Write(IndexPath, JsonSerializer.Serialize(Entries, new JsonSerializerOptions(Json) { WriteIndented = true }) + Environment.NewLine, Ct);
+	await Write(IndexPath, JsonSerializer.Serialize(Entries, new JsonSerializerOptions(Json) {
+		PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+		WriteIndented = true,
+	}) + Environment.NewLine, Ct);
 }
 
 async Task ReplaceArticle(Pth Stage, Pth Destination, Pth ArticlesRoot, CT Ct) {
