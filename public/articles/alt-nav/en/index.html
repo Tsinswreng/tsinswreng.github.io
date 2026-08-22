@@ -1,66 +1,41 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style data-mvn-style="_Common.typ">html, body {
-	margin: 0;
-	background: #000;
-	color: #fff;
-}
-
-body {
-	box-sizing: border-box;
-	min-height: 100vh;
-	padding: 1em;
-	font-family: "Noto Serif SC", serif;
-	font-size: 1.5em;
-	line-height: 1.5;
-}
-
-h1, h2, h3, h4, h5, h6 {
-	margin: 1em 0 0.5em;
-	font-weight: 700;
-}
-
-h1 {
-	text-align: center;
-}
-
-p {
-	margin: 0.75em 0;
-}
-
-ul, ol {
-	margin: 0.75em 0;
-	padding-inline-start: 1.5em;
-}
-
-figure {
-	margin: 1em 0;
-	text-align: center;
-}
-
-figcaption {
-	margin-top: 0.5em;
-}
-
-img {
-	max-width: 100%;
-	height: auto;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-th, td {
-	border: 1px solid #fff;
-	padding: 0.25em 0.5em;
-}
-
-pre {
-	overflow-x: auto;
-	padding: 0.75em;
-	border: 1px solid #fff;
-}
-
-code {
-	font-family: Consolas, "Noto Serif SC", monospace;
-	color: #0ff;
-}</style></head><body><article class="mvn-article"><h1>AltNav: Use Left Alt to Turn the Keyboard Center Area into Arrow Keys</h1><p>AltNav is an arrow-key mapping script based on AutoHotkey2, inspired by Vim’s arrow-key design. It uses the <code>Left Alt</code> key in combination with other keys to achieve cursor movement/jumping, so your hands never need to leave the center area of the keyboard.</p><h2>1 | Mappings</h2><figure><p><img alt="Keyboard_AltNav" src="../assets/Keyboard_AltNav.gen.svg"></p><figcaption>Figure&nbsp;1: Keyboard layout</figcaption></figure><ul><li>When holding <code>Left Alt</code>, <code>J</code>, <code>K</code>, <code>L</code>, <code>;</code> keys map to <code>←</code>, <code>↓</code>, <code>↑</code>, <code>→</code> respectively.</li><li>When holding <code>Left Alt</code>, <code>N</code>, <code>M</code>, <code>,</code>, <code>.</code> keys map to 4 consecutive presses of <code>←</code>, <code>↓</code>, <code>↑</code>, <code>→</code> respectively.</li><li>When holding <code>Left Alt</code> and <code>Ctrl</code>, <code>N</code>, <code>M</code>, <code>,</code>, <code>.</code> keys map to 16 consecutive presses of <code>←</code>, <code>↓</code>, <code>↑</code>, <code>→</code> respectively.</li><li><code>Left Alt</code>+<code>I</code> → Move cursor to beginning of line</li><li><code>Left Alt</code>+<code>O</code> → Move cursor to end of line</li><li><p>Move cursor to top of file</p><ul><li><code>Ctrl</code>+<code>Left Alt</code>+<code>I</code> → <code>Ctrl</code>+<code>Home</code></li></ul></li><li><p>Move cursor to bottom of file</p><ul><li><code>Ctrl</code>+<code>Left Alt</code>+<code>O</code> → <code>Ctrl</code>+<code>End</code></li></ul><p>All cursor movement mappings support holding <code>Shift</code> to select text, e.g., <code>Shift</code>+<code>Left Alt</code>+<code>J</code> moves the cursor left while selecting one character. Behavior is the same as the conventional <code>Shift</code>+arrow keys.</p></li></ul><h2>2 | Features</h2><ul><li>Quick cursor jumps while editing text, without moving your hands away from the center area of the keyboard, and without relying on a mouse</li><li>Triggered with the <code>Left Alt</code> key, no need to distinguish between read mode or edit mode, etc., and normal typing is not affected</li><li>Key mappings are global, not limited to any specific application</li><li>Movement step sizes are 1, 4, and 16, balancing precision and fast navigation</li></ul><h2>3 | Installation</h2><ul><li>Windows platform</li><li>Requires AutoHotkey2</li><li>To input in programs with higher privileges, run this script as administrator.</li></ul><h2>4 | Design Philosophy</h2><h3>4.1 | Key Selection</h3><p><code>JKL;</code> follows Vim’s arrow-key design. However, Vim’s original arrow-key order is <code>H</code>, <code>J</code>, <code>K</code>, <code>L</code> corresponding to <code>Left</code>, <code>Down</code>, <code>Up</code>, <code>Right</code>. But when your fingers rest naturally on the keyboard, your right index finger is on the <code>J</code> key. If you want to keep your right index finger on <code>J</code> without moving, and place four fingers on the four keys simultaneously, then <code>JKL;</code> fits best.</p><p>When designing the <code>Home</code>/<code>End</code> mappings, there were two options. Option A is the one currently adopted, namely <code>Left Alt</code>+<code>I</code>/<code>O</code>; Option B is <code>Left Alt</code>+<code>H</code>/<code>'</code>.</p><p>Option B is semantically better, <code>Home</code>, <code>←</code>, <code>↓</code>, <code>↑</code>, <code>→</code>, <code>End</code> form a straight line. But Option A was ultimately chosen. Because when your right index finger is on <code>J</code>, your middle and ring fingers naturally curl over <code>I</code>/<code>O</code>, making them more comfortable to press; and <code>Home</code>/<code>End</code> are still frequently used in text editing, so the combination of middle/ring fingers provides more strength than index/pinky.</p><h3>4.2 | Direction Order</h3><p>Regarding the direction order, the reason for choosing <code>Left, Down, Up, Right</code> is twofold:</p><ol><li>The order is consistent with Vim (though in fact, before designing this mapping, I had not been exposed to Vim-style arrow keys, nor did I have any corresponding habits or muscle memory.)</li><li>The <code>Down</code> and <code>Up</code> keys are handled by the middle and ring fingers respectively. These two fingers have more pressing strength, making them suitable for frequent up/down scrolling through content.</li></ol><p>There are also two drawbacks:</p><ol><li>The <code>Right</code> arrow key is used more frequently but is handled by the weaker pinky</li><li>This order is a bit counterintuitive at first glance. Grouping by direction, the four arrow keys can be divided into two dimensions: horizontal and vertical. The <code>Left, Down, Up, Right</code> arrangement lacks a strong pattern. An order like <code>Left, Right, Up, Down</code> — with horizontal and vertical pairs grouped together — seems more intuitive.</li></ol><h3>4.3 | Long-Distance Movement</h3><p>For fast movement, the script provides three step sizes: 1, 4, and 16. Each level is 4 times the previous one, so one large move can replace 4 smaller moves. Any movement distance can be composed using combinations of ±1, ±4, ±16. This is equivalent to decomposing movement distances in base 4: each larger step reduces the total number of keystrokes while retaining the precision of single-step moves.</p><p>In terms of key placement, moving from <code>JKL;</code> to <code>NM,.</code> is essentially a vertical shift, with each column preserving the same direction. The top row handles single steps, the bottom row handles 4-step moves, and holding <code>Ctrl</code> further amplifies them to 16 steps.</p><h2>5 | Known Issues</h2><p>This script may not work properly under remote control software or in virtual machines.</p></article><a href="../source/Main-en.typ">Typst 源碼</a></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AltNav: Use Left Alt to Turn the Keyboard Center Area into Arrow Keys">
+    <title>AltNav: Use Left Alt to Turn the Keyboard Center Area into Arrow Keys｜Tsinswreng</title>
+    <link rel="stylesheet" href="../../article-page.css">
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="全站導航">
+      <div class="site-nav-inner">
+        <a class="brand" href="/">Tsinswreng</a>
+        <div class="nav-links">
+          <a href="/">首頁</a>
+          <a href="/#articles">文章</a>
+          <a href="/#projects">專案</a>
+          <a href="/#tools">工具</a>
+          <a href="/#about">關於</a>
+        </div>
+      </div>
+    </nav>
+    <header class="site-hero">
+      <div class="site-hero-inner">
+        <h1>AltNav: Use Left Alt to Turn the Keyboard Center Area into Arrow Keys</h1>
+      </div>
+    </header>
+    <main class="site-main">
+      <article class="article-shell">
+        <header class="article-actions">
+          <a class="button-link" href="article.pdf">閱讀 PDF</a>
+          <a class="secondary-link" href="../source/Main-en.typ">Typst 源碼</a>
+        </header>
+        <div class="article-body">
+<article class="mvn-article"><p>AltNav is an arrow-key mapping script based on AutoHotkey2, inspired by Vim’s arrow-key design. It uses the <code>Left Alt</code> key in combination with other keys to achieve cursor movement/jumping, so your hands never need to leave the center area of the keyboard.</p><h2>1 | Mappings</h2><figure><p><img alt="Keyboard_AltNav" src="../assets/Keyboard_AltNav.gen.svg"></p><figcaption>Figure&nbsp;1: Keyboard layout</figcaption></figure><ul><li>When holding <code>Left Alt</code>, <code>J</code>, <code>K</code>, <code>L</code>, <code>;</code> keys map to <code>←</code>, <code>↓</code>, <code>↑</code>, <code>→</code> respectively.</li><li>When holding <code>Left Alt</code>, <code>N</code>, <code>M</code>, <code>,</code>, <code>.</code> keys map to 4 consecutive presses of <code>←</code>, <code>↓</code>, <code>↑</code>, <code>→</code> respectively.</li><li>When holding <code>Left Alt</code> and <code>Ctrl</code>, <code>N</code>, <code>M</code>, <code>,</code>, <code>.</code> keys map to 16 consecutive presses of <code>←</code>, <code>↓</code>, <code>↑</code>, <code>→</code> respectively.</li><li><code>Left Alt</code>+<code>I</code> → Move cursor to beginning of line</li><li><code>Left Alt</code>+<code>O</code> → Move cursor to end of line</li><li><p>Move cursor to top of file</p><ul><li><code>Ctrl</code>+<code>Left Alt</code>+<code>I</code> → <code>Ctrl</code>+<code>Home</code></li></ul></li><li><p>Move cursor to bottom of file</p><ul><li><code>Ctrl</code>+<code>Left Alt</code>+<code>O</code> → <code>Ctrl</code>+<code>End</code></li></ul><p>All cursor movement mappings support holding <code>Shift</code> to select text, e.g., <code>Shift</code>+<code>Left Alt</code>+<code>J</code> moves the cursor left while selecting one character. Behavior is the same as the conventional <code>Shift</code>+arrow keys.</p></li></ul><h2>2 | Features</h2><ul><li>Quick cursor jumps while editing text, without moving your hands away from the center area of the keyboard, and without relying on a mouse</li><li>Triggered with the <code>Left Alt</code> key, no need to distinguish between read mode or edit mode, etc., and normal typing is not affected</li><li>Key mappings are global, not limited to any specific application</li><li>Movement step sizes are 1, 4, and 16, balancing precision and fast navigation</li></ul><h2>3 | Installation</h2><ul><li>Windows platform</li><li>Requires AutoHotkey2</li><li>To input in programs with higher privileges, run this script as administrator.</li></ul><h2>4 | Design Philosophy</h2><h3>4.1 | Key Selection</h3><p><code>JKL;</code> follows Vim’s arrow-key design. However, Vim’s original arrow-key order is <code>H</code>, <code>J</code>, <code>K</code>, <code>L</code> corresponding to <code>Left</code>, <code>Down</code>, <code>Up</code>, <code>Right</code>. But when your fingers rest naturally on the keyboard, your right index finger is on the <code>J</code> key. If you want to keep your right index finger on <code>J</code> without moving, and place four fingers on the four keys simultaneously, then <code>JKL;</code> fits best.</p><p>When designing the <code>Home</code>/<code>End</code> mappings, there were two options. Option A is the one currently adopted, namely <code>Left Alt</code>+<code>I</code>/<code>O</code>; Option B is <code>Left Alt</code>+<code>H</code>/<code>'</code>.</p><p>Option B is semantically better, <code>Home</code>, <code>←</code>, <code>↓</code>, <code>↑</code>, <code>→</code>, <code>End</code> form a straight line. But Option A was ultimately chosen. Because when your right index finger is on <code>J</code>, your middle and ring fingers naturally curl over <code>I</code>/<code>O</code>, making them more comfortable to press; and <code>Home</code>/<code>End</code> are still frequently used in text editing, so the combination of middle/ring fingers provides more strength than index/pinky.</p><h3>4.2 | Direction Order</h3><p>Regarding the direction order, the reason for choosing <code>Left, Down, Up, Right</code> is twofold:</p><ol><li>The order is consistent with Vim (though in fact, before designing this mapping, I had not been exposed to Vim-style arrow keys, nor did I have any corresponding habits or muscle memory.)</li><li>The <code>Down</code> and <code>Up</code> keys are handled by the middle and ring fingers respectively. These two fingers have more pressing strength, making them suitable for frequent up/down scrolling through content.</li></ol><p>There are also two drawbacks:</p><ol><li>The <code>Right</code> arrow key is used more frequently but is handled by the weaker pinky</li><li>This order is a bit counterintuitive at first glance. Grouping by direction, the four arrow keys can be divided into two dimensions: horizontal and vertical. The <code>Left, Down, Up, Right</code> arrangement lacks a strong pattern. An order like <code>Left, Right, Up, Down</code> — with horizontal and vertical pairs grouped together — seems more intuitive.</li></ol><h3>4.3 | Long-Distance Movement</h3><p>For fast movement, the script provides three step sizes: 1, 4, and 16. Each level is 4 times the previous one, so one large move can replace 4 smaller moves. Any movement distance can be composed using combinations of ±1, ±4, ±16. This is equivalent to decomposing movement distances in base 4: each larger step reduces the total number of keystrokes while retaining the precision of single-step moves.</p><p>In terms of key placement, moving from <code>JKL;</code> to <code>NM,.</code> is essentially a vertical shift, with each column preserving the same direction. The top row handles single steps, the bottom row handles 4-step moves, and holding <code>Ctrl</code> further amplifies them to 16 steps.</p><h2>5 | Known Issues</h2><p>This script may not work properly under remote control software or in virtual machines.</p></article>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><p>© 2026 Tsinswreng</p></footer>
+  </body>
+</html>

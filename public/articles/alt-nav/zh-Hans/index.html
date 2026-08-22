@@ -1,66 +1,41 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style data-mvn-style="_Common.typ">html, body {
-	margin: 0;
-	background: #000;
-	color: #fff;
-}
-
-body {
-	box-sizing: border-box;
-	min-height: 100vh;
-	padding: 1em;
-	font-family: "Noto Serif SC", serif;
-	font-size: 1.5em;
-	line-height: 1.5;
-}
-
-h1, h2, h3, h4, h5, h6 {
-	margin: 1em 0 0.5em;
-	font-weight: 700;
-}
-
-h1 {
-	text-align: center;
-}
-
-p {
-	margin: 0.75em 0;
-}
-
-ul, ol {
-	margin: 0.75em 0;
-	padding-inline-start: 1.5em;
-}
-
-figure {
-	margin: 1em 0;
-	text-align: center;
-}
-
-figcaption {
-	margin-top: 0.5em;
-}
-
-img {
-	max-width: 100%;
-	height: auto;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-th, td {
-	border: 1px solid #fff;
-	padding: 0.25em 0.5em;
-}
-
-pre {
-	overflow-x: auto;
-	padding: 0.75em;
-	border: 1px solid #fff;
-}
-
-code {
-	font-family: Consolas, "Noto Serif SC", monospace;
-	color: #0ff;
-}</style></head><body><article class="mvn-article"><h1>AltNav:用左Alt把键盘中心区变成方向键</h1><p>AltNav为基于AutoHotkey2实现的方向键映射脚本, 受Vim方向键设计启发, 通过<code>左Alt</code>键结合其他按键来实现方向移动/光标跳转, 使您的手不用离开键盘中心区域。</p><h2>1 | 映射</h2><figure><p><img alt="Keyboard_AltNav" src="../assets/Keyboard_AltNav.gen.svg"></p><figcaption>Figure&nbsp;1: 键位图</figcaption></figure><ul><li>按住<code>左Alt</code>时, <code>J</code>、<code>K</code>、<code>L</code>、<code>;</code>键分别映射为 <code>←</code>、<code>↓</code>、<code>↑</code>、<code>→</code>键。</li><li>按住<code>左Alt</code>时, <code>N</code>、<code>M</code>、<code>,</code>、<code>.</code>键分别映射为连续4次的 <code>←</code>、<code>↓</code>、<code>↑</code>、<code>→</code>。</li><li>按住<code>左Alt</code>与<code>Ctrl</code>时, <code>N</code>、<code>M</code>、<code>,</code>、<code>.</code>键分别映射连续16次的 <code>←</code>、<code>↓</code>、<code>↑</code>、<code>→</code>。</li><li><code>左Alt</code>+<code>I</code> → 光标移动到行首</li><li><code>左Alt</code>+<code>O</code> → 光标移动到行末</li><li><p>光标移至文件首</p><ul><li><code>Ctrl</code>+<code>左Alt</code>+<code>I</code> → <code>Ctrl</code>+<code>Home</code></li></ul></li><li><p>光标移至文件尾</p><ul><li><code>Ctrl</code>+<code>左Alt</code>+<code>O</code> → <code>Ctrl</code>+<code>End</code></li></ul><p>所有光标移动映射均支持按住<code>Shift</code>键选中文本, 如<code>Shift</code>+<code>左Alt</code>+<code>J</code>即光标向左选中一个字符。 在行为上与常规的<code>Shift</code>+方向键相同。</p></li></ul><h2>2 | 特点</h2><ul><li>编辑文本时光标快速跳转, 双手不用离开键盘中心区, 不需依赖鼠标</li><li>结合<code>左Alt</code>键触发, 不需区分阅读模式或编辑模式等, 不影响正常输出</li><li>快捷键映射为全局生效, 不止局限于某一应用</li><li>移动步长分为 1、4、16 三档, 兼顾精确与快速定位</li></ul><h2>3 | 安装</h2><ul><li>Windows平台</li><li>依赖 AutoHotkey2</li><li>在权限更高的程序上输入则需要用管理员运行此脚本。</li></ul><h2>4 | 设计哲学</h2><h3>4.1 | 按键选取</h3><p><code>JKL;</code>参照了Vim的方向键设计。 但Vim原先的方向键顺序是<code>H</code>、<code>J</code>、<code>K</code>、<code>L</code> 分别对应<code>左</code>、<code>下</code>、<code>上</code>、<code>右</code>。 但一般手指搭在键盘上时, 右手食指是放在<code>J</code>键上的。 若要保持右手食指放在<code>J</code>键上不动, 同时放四根手指在四个键上、则只有<code>JKL;</code>最适合。 <img alt="assets/2026-08-20-16-36-34.png" src="../assets/2026-08-20-16-36-34.png"></p><p>设计<code>Home</code>/<code>End</code>的映射时, 有两种方案。 方案A是当前采用的方案, 即<code>左Alt</code>+<code>I</code>/<code>O</code>; 方案B是<code>左Alt</code>+<code>H</code>/<code>'</code>。</p><p>方案B在语义上更佳, <code>Home</code>,<code>←</code>,<code>↓</code>,<code>↑</code>,<code>→</code>,<code>End</code>成一线。 但最终仍然选择了方案A。 因右手食指放在<code>J</code>键上时, 中指无名指会分别自然蜷缩在<code>I</code>/<code>O</code>上, 按起来更舒服; 且文本编辑中<code>Home</code>/<code>End</code>仍是高频使用的功能, 中指/无名指的组合 力量大于食指/小指。</p><h3>4.2 | 方向顺序</h3><p>方向顺序方面, 之所以选择了<code>左,下,上,右</code>顺序, 这样设计有两个好处:</p><ol><li>顺序和Vim保持一致(但其实在设计出这套方向映射之前, 本人并没有接触过Vim风格的方向键, 也没有相应的习惯或肌肉记忆。)</li><li>下、上 键 分别由 中指 和 无名指 负责。 这两根手指按压力量较大, 适合频繁上下跳行翻阅内容的场景</li></ol><p>也有两个坏处:</p><ol><li>右方向键 使用频率更高但由力量小拇指负责</li><li>这个顺序乍一看有点反直觉。 按方向来分类, 四键方向键一共可以分出 横向 和 纵向 两个维度。 <code>左</code>,<code>下</code>,<code>上</code>,<code>右</code>的方案规律性不强。 若按<code>左</code>,<code>右</code>,<code>上</code>,<code>下</code>这样横向和纵向各自排列在一起的顺序看起来更直觉一些。</li></ol><h3>4.3 | 长距移动</h3><p>快速移动时, 脚本提供 1、4、16 三种步长。 每一级都是前一级的 4 倍, 一次较大的移动可以替代 4 次较小的移动。 任意移动距离都可以用 ±1、±4、±16 组合出来。 这相当于用四进位分解移动距离：每个较大的步长都能减少总击键次数，同时保留单步移动提供的精确性。</p><p>在键位选取上, 从<code>JKL;</code>到<code>NM,.</code>相当于上下平移, 同一列保持同一方向, 上排负责单步, 下排负责4步, 再按住<code>Ctrl</code>则放大为16步。</p><h2>5 | 已知问题</h2><p>在远程控制软件/虚拟机下时此脚本可能不能正常工作</p></article><a href="../source/Main-zh-Hans.typ">Typst 源碼</a></body></html>
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AltNav:用左Alt把键盘中心区变成方向键">
+    <title>AltNav:用左Alt把键盘中心区变成方向键｜Tsinswreng</title>
+    <link rel="stylesheet" href="../../article-page.css">
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="全站導航">
+      <div class="site-nav-inner">
+        <a class="brand" href="/">Tsinswreng</a>
+        <div class="nav-links">
+          <a href="/">首頁</a>
+          <a href="/#articles">文章</a>
+          <a href="/#projects">專案</a>
+          <a href="/#tools">工具</a>
+          <a href="/#about">關於</a>
+        </div>
+      </div>
+    </nav>
+    <header class="site-hero">
+      <div class="site-hero-inner">
+        <h1>AltNav:用左Alt把键盘中心区变成方向键</h1>
+      </div>
+    </header>
+    <main class="site-main">
+      <article class="article-shell">
+        <header class="article-actions">
+          <a class="button-link" href="article.pdf">閱讀 PDF</a>
+          <a class="secondary-link" href="../source/Main-zh-Hans.typ">Typst 源碼</a>
+        </header>
+        <div class="article-body">
+<article class="mvn-article"><p>AltNav为基于AutoHotkey2实现的方向键映射脚本, 受Vim方向键设计启发, 通过<code>左Alt</code>键结合其他按键来实现方向移动/光标跳转, 使您的手不用离开键盘中心区域。</p><h2>1 | 映射</h2><figure><p><img alt="Keyboard_AltNav" src="../assets/Keyboard_AltNav.gen.svg"></p><figcaption>Figure&nbsp;1: 键位图</figcaption></figure><ul><li>按住<code>左Alt</code>时, <code>J</code>、<code>K</code>、<code>L</code>、<code>;</code>键分别映射为 <code>←</code>、<code>↓</code>、<code>↑</code>、<code>→</code>键。</li><li>按住<code>左Alt</code>时, <code>N</code>、<code>M</code>、<code>,</code>、<code>.</code>键分别映射为连续4次的 <code>←</code>、<code>↓</code>、<code>↑</code>、<code>→</code>。</li><li>按住<code>左Alt</code>与<code>Ctrl</code>时, <code>N</code>、<code>M</code>、<code>,</code>、<code>.</code>键分别映射连续16次的 <code>←</code>、<code>↓</code>、<code>↑</code>、<code>→</code>。</li><li><code>左Alt</code>+<code>I</code> → 光标移动到行首</li><li><code>左Alt</code>+<code>O</code> → 光标移动到行末</li><li><p>光标移至文件首</p><ul><li><code>Ctrl</code>+<code>左Alt</code>+<code>I</code> → <code>Ctrl</code>+<code>Home</code></li></ul></li><li><p>光标移至文件尾</p><ul><li><code>Ctrl</code>+<code>左Alt</code>+<code>O</code> → <code>Ctrl</code>+<code>End</code></li></ul><p>所有光标移动映射均支持按住<code>Shift</code>键选中文本, 如<code>Shift</code>+<code>左Alt</code>+<code>J</code>即光标向左选中一个字符。 在行为上与常规的<code>Shift</code>+方向键相同。</p></li></ul><h2>2 | 特点</h2><ul><li>编辑文本时光标快速跳转, 双手不用离开键盘中心区, 不需依赖鼠标</li><li>结合<code>左Alt</code>键触发, 不需区分阅读模式或编辑模式等, 不影响正常输出</li><li>快捷键映射为全局生效, 不止局限于某一应用</li><li>移动步长分为 1、4、16 三档, 兼顾精确与快速定位</li></ul><h2>3 | 安装</h2><ul><li>Windows平台</li><li>依赖 AutoHotkey2</li><li>在权限更高的程序上输入则需要用管理员运行此脚本。</li></ul><h2>4 | 设计哲学</h2><h3>4.1 | 按键选取</h3><p><code>JKL;</code>参照了Vim的方向键设计。 但Vim原先的方向键顺序是<code>H</code>、<code>J</code>、<code>K</code>、<code>L</code> 分别对应<code>左</code>、<code>下</code>、<code>上</code>、<code>右</code>。 但一般手指搭在键盘上时, 右手食指是放在<code>J</code>键上的。 若要保持右手食指放在<code>J</code>键上不动, 同时放四根手指在四个键上、则只有<code>JKL;</code>最适合。 <img alt="assets/2026-08-20-16-36-34.png" src="../assets/2026-08-20-16-36-34.png"></p><p>设计<code>Home</code>/<code>End</code>的映射时, 有两种方案。 方案A是当前采用的方案, 即<code>左Alt</code>+<code>I</code>/<code>O</code>; 方案B是<code>左Alt</code>+<code>H</code>/<code>'</code>。</p><p>方案B在语义上更佳, <code>Home</code>,<code>←</code>,<code>↓</code>,<code>↑</code>,<code>→</code>,<code>End</code>成一线。 但最终仍然选择了方案A。 因右手食指放在<code>J</code>键上时, 中指无名指会分别自然蜷缩在<code>I</code>/<code>O</code>上, 按起来更舒服; 且文本编辑中<code>Home</code>/<code>End</code>仍是高频使用的功能, 中指/无名指的组合 力量大于食指/小指。</p><h3>4.2 | 方向顺序</h3><p>方向顺序方面, 之所以选择了<code>左,下,上,右</code>顺序, 这样设计有两个好处:</p><ol><li>顺序和Vim保持一致(但其实在设计出这套方向映射之前, 本人并没有接触过Vim风格的方向键, 也没有相应的习惯或肌肉记忆。)</li><li>下、上 键 分别由 中指 和 无名指 负责。 这两根手指按压力量较大, 适合频繁上下跳行翻阅内容的场景</li></ol><p>也有两个坏处:</p><ol><li>右方向键 使用频率更高但由力量小拇指负责</li><li>这个顺序乍一看有点反直觉。 按方向来分类, 四键方向键一共可以分出 横向 和 纵向 两个维度。 <code>左</code>,<code>下</code>,<code>上</code>,<code>右</code>的方案规律性不强。 若按<code>左</code>,<code>右</code>,<code>上</code>,<code>下</code>这样横向和纵向各自排列在一起的顺序看起来更直觉一些。</li></ol><h3>4.3 | 长距移动</h3><p>快速移动时, 脚本提供 1、4、16 三种步长。 每一级都是前一级的 4 倍, 一次较大的移动可以替代 4 次较小的移动。 任意移动距离都可以用 ±1、±4、±16 组合出来。 这相当于用四进位分解移动距离：每个较大的步长都能减少总击键次数，同时保留单步移动提供的精确性。</p><p>在键位选取上, 从<code>JKL;</code>到<code>NM,.</code>相当于上下平移, 同一列保持同一方向, 上排负责单步, 下排负责4步, 再按住<code>Ctrl</code>则放大为16步。</p><h2>5 | 已知问题</h2><p>在远程控制软件/虚拟机下时此脚本可能不能正常工作</p></article>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><p>© 2026 Tsinswreng</p></footer>
+  </body>
+</html>

@@ -6,6 +6,7 @@
 #nullable enable
 
 using AngleSharp;
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Tsinswreng.CsSh;
@@ -216,11 +217,72 @@ async Task RewriteHtml(Pth HtmlSource, Pth HtmlDestination, Pth TypDestination, 
 			Element.SetAttribute(AttributeName, Relative + Suffix);
 		}
 	}
-	var SourceLink = Document.CreateElement("a");
-	SourceLink.SetAttribute("href", Path.GetRelativePath(DirName(HtmlDestination), TypDestination).Replace(Path.DirectorySeparatorChar, Config.UrlPathSeparator));
-	SourceLink.TextContent = Config.TypstSourceLinkText;
-	Document.Body?.AppendChild(SourceLink);
-	await Write(HtmlDestination, Document.ToHtml(), Ct);
+
+	// Mvn 的 _Common.typ 會為整個 HTML 文件設定黑底與大字；本站需要自己負責頁面外殼和排版。
+	foreach (var Style in Document.QuerySelectorAll("style[data-mvn-style]")) {
+		Style.Remove();
+	}
+	var Article = Document.Body?.QuerySelector("article");
+	var Heading = Article?.QuerySelector("h1");
+	var Title = Heading?.TextContent.Trim();
+	if (string.IsNullOrWhiteSpace(Title)) {
+		Title = Config.DefaultArticleTitle;
+	}
+	// 文章的唯一一級標題放在本站 hero 中，避免同頁出現兩個相同標題。
+	Heading?.Remove();
+	var ArticleHtml = Article?.OuterHtml ?? Document.Body?.InnerHtml ?? "";
+	var SourceUrl = Path.GetRelativePath(DirName(HtmlDestination), TypDestination).Replace(Path.DirectorySeparatorChar, Config.UrlPathSeparator);
+	// 每個語言頁固定位於 <slug>/<lang>/index.html，樣式表位於 articles 根目錄。
+	var ArticleCssUrl = $"{Config.ParentDirectoryName}/{Config.ParentDirectoryName}/{Config.ArticleStylesheetFileName}";
+	var Language = WebUtility.HtmlEncode(Path.GetFileName(DirName(HtmlDestination).Value));
+	await Write(HtmlDestination, BuildArticlePage(Title, Language, ArticleHtml, SourceUrl, ArticleCssUrl), Ct);
+}
+
+string BuildArticlePage(string Title, string Language, string ArticleHtml, string SourceUrl, string ArticleCssUrl) {
+	var EncodedTitle = WebUtility.HtmlEncode(Title);
+	return $$"""
+<!doctype html>
+<html lang="{{Language}}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{EncodedTitle}}">
+    <title>{{EncodedTitle}}｜Tsinswreng</title>
+    <link rel="stylesheet" href="{{ArticleCssUrl}}">
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="全站導航">
+      <div class="site-nav-inner">
+        <a class="brand" href="/">Tsinswreng</a>
+        <div class="nav-links">
+          <a href="/">首頁</a>
+          <a href="/#articles">文章</a>
+          <a href="/#projects">專案</a>
+          <a href="/#tools">工具</a>
+          <a href="/#about">關於</a>
+        </div>
+      </div>
+    </nav>
+    <header class="site-hero">
+      <div class="site-hero-inner">
+        <h1>{{EncodedTitle}}</h1>
+      </div>
+    </header>
+    <main class="site-main">
+      <article class="article-shell">
+        <header class="article-actions">
+          <a class="button-link" href="article.pdf">閱讀 PDF</a>
+          <a class="secondary-link" href="{{SourceUrl}}">{{Config.TypstSourceLinkText}}</a>
+        </header>
+        <div class="article-body">
+{{ArticleHtml}}
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><p>© {{DateTime.Now.Year}} Tsinswreng</p></footer>
+  </body>
+</html>
+""";
 }
 
 bool TryResolveRelativeUrl(string Value, Pth SourceRoot, out Pth SourcePath, out string Suffix) {
@@ -301,6 +363,8 @@ sealed class ImportConfig {
 	public string PdfExtension { get; } = ".pdf";
 	public string HtmlIndexFileName { get; } = "index.html";
 	public string PdfArticleFileName { get; } = "article.pdf";
+	public string ArticleStylesheetFileName { get; } = "article-page.css";
+	public string DefaultArticleTitle { get; } = "文章";
 	public string TypstSourceLinkText { get; } = "Typst 源碼";
 	public string HtmlResourceSelector { get; } = "[src], [href]";
 	public string[] HtmlUrlAttributeNames { get; } = ["src", "href"];
