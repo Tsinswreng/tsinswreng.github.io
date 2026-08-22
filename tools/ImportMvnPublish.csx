@@ -51,6 +51,7 @@ async Task Import(Pth ManifestPath, CT Ct) {
 	try {
 		await StageArticle(SourceRoot, Stage, Documents, Ct);
 		await ReplaceArticle(Stage, Destination, ArticlesRoot, Ct);
+		await UpdateArticleIndex(ArticlesRoot, Slug, Documents, Ct);
 		await Echo($"imported {Manifest.Id} -> {Path.GetRelativePath(SiteRoot, Destination)}", Ct);
 	}
 	finally {
@@ -319,6 +320,26 @@ Pth? MapPublishedPath(Pth SourcePath, Pth SourceAssets, Pth StageAssets, IReadOn
 	return StageAssets / Path.GetRelativePath(SourceAssets, SourcePath);
 }
 
+async Task UpdateArticleIndex(Pth ArticlesRoot, string Slug, List<PublishedDocument> Documents, CT Ct) {
+	var IndexPath = ArticlesRoot / Config.ArticleIndexFileName;
+	var Entries = new List<ArticleIndexEntry>();
+	if (IsFile(IndexPath)) {
+		await using var Existing = await Read(IndexPath, Ct);
+		Entries = JsonSerializer.Deserialize<List<ArticleIndexEntry>>(await Existing.Text(Ct), Json) ?? new();
+	}
+	Entries.RemoveAll(Entry => string.Equals(Entry.Slug, Slug, StringComparison.OrdinalIgnoreCase));
+	foreach (var Document in Documents) {
+		await using var Source = await Read(Document.HtmlSource, Ct);
+		var Html = await Source.Text(Ct);
+		var Parsed = await BrowsingContext.New(Configuration.Default).OpenAsync(Requester => Requester.Content(Html), Ct);
+		var Title = Parsed.Body?.QuerySelector("article h1")?.TextContent.Trim() ?? Slug;
+		Entries.Add(new ArticleIndexEntry(Slug, Document.Lang, Title, "/articles/" + Slug + "/" + Document.Lang + "/"));
+	}
+	Entries.Sort((Left, Right) => string.Compare(Left.Slug + "/" + Left.Lang, Right.Slug + "/" + Right.Lang, StringComparison.Ordinal));
+	await Mkdir(ArticlesRoot, Ct);
+	await Write(IndexPath, JsonSerializer.Serialize(Entries, new JsonSerializerOptions(Json) { WriteIndented = true }) + Environment.NewLine, Ct);
+}
+
 async Task ReplaceArticle(Pth Stage, Pth Destination, Pth ArticlesRoot, CT Ct) {
 	// 替換範圍固定為單一 slug，防止匯入器影響同站其他文章。
 	await Mkdir(ArticlesRoot, Ct);
@@ -363,6 +384,7 @@ sealed class ImportConfig {
 	public string PdfExtension { get; } = ".pdf";
 	public string HtmlIndexFileName { get; } = "index.html";
 	public string PdfArticleFileName { get; } = "article.pdf";
+	public string ArticleIndexFileName { get; } = "index.json";
 	public string ArticleStylesheetFileName { get; } = "article-page.css";
 	public string DefaultArticleTitle { get; } = "文章";
 	public string TypstSourceLinkText { get; } = "Typst 源碼";
@@ -390,3 +412,4 @@ record PublishedDoc {
 }
 
 record PublishedDocument(string Lang, Pth TypSource, Pth HtmlSource, Pth PdfSource);
+record ArticleIndexEntry(string Slug, string Lang, string Title, string Url);

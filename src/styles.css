@@ -20,6 +20,9 @@ a { color: inherit; }
 .home-card { padding: 1.5rem; }
 .home-card h2 { margin-top: 0; }
 .home-card p, .article-heading p { color: #aebbd2; }
+.article-list-item { padding: 1rem 0; border-top: 1px solid #2b3853; }
+.article-list-item h3 { margin: 0 0 .35rem; }
+.article-list-item p { margin: 0 0 .75rem; }
 .spaced { margin-top: 1rem; }
 .button-link { display: inline-block; padding: .65rem 1rem; border-radius: 8px; background: #3978e8; color: white; text-decoration: none; }
 .button-link:hover, .button-link:focus-visible { background: #5490f5; }
