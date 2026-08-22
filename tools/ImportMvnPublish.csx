@@ -127,12 +127,13 @@ void AddDocuments(IReadOnlyDictionary<string, PublishedDoc> Entries, Pth SourceR
 			throw new Exception($"document language must be a unique path segment: {Language}");
 		}
 		var Name = Path.GetFileNameWithoutExtension(FileName);
+		var TypSource = RequireUnder(SourceRoot / FileName, SourceRoot);
 		var HtmlSource = RequireUnder(SourceRoot / $"{Name}{Config.HtmlExtension}", SourceRoot);
 		var PdfSource = RequireUnder(SourceRoot / $"{Name}{Config.PdfExtension}", SourceRoot);
-		if (!IsFile(HtmlSource) || !IsFile(PdfSource)) {
-			throw new Exception($"published HTML and PDF are required for {FileName}");
+		if (!IsFile(TypSource) || !IsFile(HtmlSource) || !IsFile(PdfSource)) {
+			throw new Exception($"published Typst, HTML, and PDF are required for {FileName}");
 		}
-		Result.Add(new(Language, HtmlSource, PdfSource));
+		Result.Add(new(Language, TypSource, HtmlSource, PdfSource));
 	}
 }
 
@@ -156,12 +157,30 @@ async Task StageArticle(Pth SourceRoot, Pth Stage, List<PublishedDocument> Docum
 	}
 
 	var OutputPaths = CreateOutputPaths(Documents, Stage);
+	var StageSources = Stage / Config.SourceDirectoryName;
+	await CopySourceBundle(SourceRoot, SourceAssets, StageSources, Ct);
 	foreach (var Document in Documents) {
 		var HtmlDestination = OutputPaths[Document.HtmlSource.Value];
 		var PdfDestination = OutputPaths[Document.PdfSource.Value];
+		var TypDestination = StageSources / BaseName(Document.TypSource);
 		await Mkdir(DirName(HtmlDestination), Ct);
-		await RewriteHtml(Document.HtmlSource, HtmlDestination, SourceRoot, SourceAssets, StageAssets, OutputPaths, Ct);
+		await RewriteHtml(Document.HtmlSource, HtmlDestination, TypDestination, SourceRoot, SourceAssets, StageAssets, OutputPaths, Ct);
 		await Cp(Document.PdfSource, PdfDestination, new(Overwrite: true), Ct);
+	}
+}
+
+async Task CopySourceBundle(Pth SourceRoot, Pth SourceAssets, Pth StageSources, CT Ct) {
+	// 原始碼與其本地 assets 維持發布目錄的相對關係，讓讀者取得的內容仍可供 Typst 使用。
+	await Mkdir(StageSources, Ct);
+	foreach (var SourceFile in Ls(SourceRoot).OfType<FileInfo>()) {
+		if (string.Equals(SourceFile.Extension, Config.TypstExtension, StringComparison.OrdinalIgnoreCase)) {
+			await Cp(SourceFile.FullName, StageSources / SourceFile.Name, new(Overwrite: true), Ct);
+		}
+	}
+	if (IsDir(SourceAssets)) {
+		var StageSourceAssets = StageSources / Config.AssetsDirectoryName;
+		await Mkdir(StageSourceAssets, Ct);
+		await Cp(SourceAssets / Config.AllFilesGlob, StageSourceAssets, new(Overwrite: true), Ct);
 	}
 }
 
@@ -176,7 +195,7 @@ Dictionary<string, Pth> CreateOutputPaths(List<PublishedDocument> Documents, Pth
 	return Result;
 }
 
-async Task RewriteHtml(Pth HtmlSource, Pth HtmlDestination, Pth SourceRoot, Pth SourceAssets, Pth StageAssets, IReadOnlyDictionary<string, Pth> OutputPaths, CT Ct) {
+async Task RewriteHtml(Pth HtmlSource, Pth HtmlDestination, Pth TypDestination, Pth SourceRoot, Pth SourceAssets, Pth StageAssets, IReadOnlyDictionary<string, Pth> OutputPaths, CT Ct) {
 	// AngleSharp 只處理已構建 HTML 的資源 URL；不解析 Typst 正文，也不猜測資產列表。
 	await using var Source = await Read(HtmlSource, Ct);
 	var Html = await Source.Text(Ct);
@@ -197,6 +216,10 @@ async Task RewriteHtml(Pth HtmlSource, Pth HtmlDestination, Pth SourceRoot, Pth 
 			Element.SetAttribute(AttributeName, Relative + Suffix);
 		}
 	}
+	var SourceLink = Document.CreateElement("a");
+	SourceLink.SetAttribute("href", Path.GetRelativePath(DirName(HtmlDestination), TypDestination).Replace(Path.DirectorySeparatorChar, Config.UrlPathSeparator));
+	SourceLink.TextContent = Config.TypstSourceLinkText;
+	Document.Body?.AppendChild(SourceLink);
 	await Write(HtmlDestination, Document.ToHtml(), Ct);
 }
 
@@ -265,6 +288,7 @@ sealed class ImportConfig {
 	public string ParentDirectoryName { get; } = "..";
 	public string PublicDirectoryName { get; } = "public";
 	public string ArticlesDirectoryName { get; } = "articles";
+	public string SourceDirectoryName { get; } = "source";
 	public string AssetsDirectoryName { get; } = "assets";
 	public string StagingDirectoryPrefix { get; } = ".mvn-import-";
 	public string AllFilesGlob { get; } = "*";
@@ -277,6 +301,7 @@ sealed class ImportConfig {
 	public string PdfExtension { get; } = ".pdf";
 	public string HtmlIndexFileName { get; } = "index.html";
 	public string PdfArticleFileName { get; } = "article.pdf";
+	public string TypstSourceLinkText { get; } = "Typst 源碼";
 	public string HtmlResourceSelector { get; } = "[src], [href]";
 	public string[] HtmlUrlAttributeNames { get; } = ["src", "href"];
 	public char[] UrlSuffixSeparators { get; } = ['?', '#'];
@@ -300,4 +325,4 @@ record PublishedDoc {
 	public string Lang { get; init; } = "";
 }
 
-record PublishedDocument(string Lang, Pth HtmlSource, Pth PdfSource);
+record PublishedDocument(string Lang, Pth TypSource, Pth HtmlSource, Pth PdfSource);
