@@ -714,7 +714,7 @@ a {
 	content: attr(data-lang);
 }
 
-/* 引用塊：_Common.typ 的 HTML 靶輸出 div.mvn-quote，PDF 只有左側 3pt 粗線。 */
+/* 引用塊：_Common.typ 的 HTML 靶輸出 blockquote.mvn-quote（2026-09-30 前是 div），PDF 只有左側 3pt 粗線。 */
 .article-body .mvn-quote {
 	margin: 0;
 	padding: calc(0.75 * var(--mvn-em) - var(--mvn-line-slack)) calc(0.75 * var(--mvn-em)) calc(0.75 * var(--mvn-em) - var(--mvn-line-slack)) calc(1 * var(--mvn-em));
@@ -760,10 +760,42 @@ a {
 	font-weight: 700;
 }
 
-/* 以下兩項是本站加上去的，不在 _Mvn/Article.css 的同步範圍內：
-   標題錨點由匯入器寫進正文片段，複製按鈕由頁面腳本加上（沒有 JS 時不存在）。 */
+/* 以下三項是本站加上去的，不在 _Mvn/Article.css 的同步範圍內：
+   標題錨點由匯入器寫進正文片段，複製按鈕由頁面腳本加上（沒有 JS 時不存在），
+   腳註樣式 Mvn 兩靶都沒有（PDF 靠 Typst 排在頁腳、HTML 靶根本不排），故由本站補。 */
 .article-body :is(h1, h2, h3, h4, h5, h6) {
 	position: relative;
+}
+
+/* 腳註：正文的註號是 sup[id^="loc-"]，註文在 article 末尾的 section[role=doc-endnotes]。
+   匯入器會把 Typst 排在 article 之後的註文搬進 article，否則註號會成死鏈。 */
+.article-body sup[id^="loc-"] {
+	font-size: 0.68em;
+	line-height: 0;
+}
+
+.article-body [role="doc-endnotes"] {
+	margin-top: calc(1.6 * var(--mvn-em));
+	padding-top: calc(0.7 * var(--mvn-em));
+	border-top: 1pt solid #006060;
+	font-size: calc(0.85 * var(--mvn-em));
+	line-height: 1.5;
+}
+
+.article-body [role="doc-endnotes"] ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.article-body [role="doc-endnotes"] li {
+	margin: 0 0 calc(0.35 * var(--mvn-em));
+	text-indent: 0;
+}
+
+.article-body [role="doc-endnotes"] sup {
+	margin-inline-end: 0.45em;
+	font-size: 0.85em;
 }
 
 /* 絕對定位且不指定 inset，故落在文字後方的靜態位置，只是不撐開標題寬度：

@@ -396,6 +396,12 @@ async Task<ArticlePage> RewriteHtml(PublishedDocument Entry, Pth BodyDestination
 			Toc.Add(new TocEntry(Id, Name, Level));
 		}
 	}
+	// 腳註：Typst 的 HTML 靶把註文放在 article 之後的 section[role=doc-endnotes]，
+	// 不搬進 article 的話，正文的註號（href="#loc-N"）會指向不存在的錨點。
+	var Endnotes = Page.Body?.QuerySelector(Config.EndnotesSelector);
+	if (Article is not null && Endnotes is not null) {
+		Article.AppendChild(Endnotes);
+	}
 	var ArticleHtml = Article?.OuterHtml ?? Page.Body?.InnerHtml ?? "";
 	await Write(BodyDestination, ArticleHtml, Ct);
 	return new ArticlePage(
@@ -548,6 +554,8 @@ sealed class ImportConfig {
 	public string ArticlesUrlPrefix { get; } = "/articles";
 	// 只把這幾級標題收進目錄，並在缺 id 時補錨點。
 	public string TocHeadingSelector { get; } = "h2, h3, h4";
+	// Typst HTML 靶的腳註區塊。它在 article 之外，故要搬進來。
+	public string EndnotesSelector { get; } = "section[role=doc-endnotes]";
 	// 標題文字清不出任何字母數字時用的錨點名。
 	public string DefaultAnchorName { get; } = "section";
 	// 標題末尾的錨點連結；樣式在網站側的 public/assets/site.css。

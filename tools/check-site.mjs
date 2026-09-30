@@ -19,7 +19,8 @@ const outDir = path.join(root, process.argv[2] ?? "dist");
 
 // 正文片段是給產生器組頁面用的素材，不是要給人看的頁面；
 // 它被 vite 原樣複製進 dist/，故自查時要排除在頁面之外，但仍可作為連結目標。
-const fragmentPattern = /(^|\/)body\.html$/;
+// 同語言多文檔時片段叫 <doc>.body.html，故兩種都要排除。
+const fragmentPattern = /(^|\/)([^/]*\.)?body\.html$/;
 
 async function walk(directory) {
 	const entries = await readdir(directory, { withFileTypes: true });

@@ -1,8 +1,28 @@
 {
-	"_comment": "人手維護的站點側文章資料，鍵是 Mvn manifest 的 Slug。機器推不出來的欄位放這裏：date（YYYY-MM-DD，用於排序）、summary（列表頁摘要）、tags（陣列，暫未顯示）。留空即不顯示、不參與排序。",
+	"_comment": "人手維護的站點側文章資料，鍵是 Mvn manifest 的 Slug。機器推不出來的欄位放這裏：date（YYYY-MM-DD，用於排序）、summary（列表頁摘要）、tags（陣列，暫未顯示）。留空即不顯示、不參與排序。摘要取自各篇自己的開頭段，不是另寫的宣傳語。",
 	"alt-nav": {
 		"date": "",
 		"summary": "受 Vim 方向鍵設計啟發的 AutoHotkey 腳本：按住左 Alt，把鍵盤中心區的 JKL; 等鍵映射成方向鍵與光標跳轉。",
 		"tags": ["AutoHotkey", "鍵盤"]
+	},
+	"cyber-security": {
+		"date": "",
+		"summary": "紅隊在一次護網演習裏的完整作業流程：演習前手裏有甚麼、怎麼摸底、從哪裏進去、進去之後往哪站、往哪走、最後怎麼交差。同專案另有《口令與憑據》一篇。",
+		"tags": ["網絡安全", "紅隊"]
+	},
+	"disk-junction-migration": {
+		"date": "",
+		"summary": "把佔空間的目錄搬到別的盤，再用 mklink /J 在原位置建同名的目錄聯接，原路徑照常訪問，藉此給 C 盤騰出空間。",
+		"tags": ["Windows", "磁盤"]
+	},
+	"skill-concept-chain": {
+		"date": "",
+		"summary": "借 IDE 讀代碼的體驗來治術語：讓文檔裏的概念像變量一樣先定義後引用、可溯源。",
+		"tags": ["文檔", "skill"]
+	},
+	"skill-elucidate": {
+		"date": "",
+		"summary": "一套寫作規範，來自對真實 AI 輸出常見毛病的歸納，用來把模型輸出改寫成規範易懂的人話；涵蓋用詞表述、行文組織、舉例類比、排版。",
+		"tags": ["寫作", "skill"]
 	}
 }

@@ -469,7 +469,9 @@ for (const locale of localeOrder) {
 	// 單篇入口：列出這篇有哪些內容語言與格式
 	for (const work of works) {
 		const rows = work.articles.map((article) => {
-			const docLabel = article.doc ? `<span class="lang-note">${escapeHtml(article.doc)}</span>` : "";
+			const sameLang = work.articles.filter((item) => item.contentLang === article.contentLang);
+			// 同一語言只有一篇時，網址不會多出這一段，顯示它只是噪音；多篇時它才是分辨用資訊。
+			const docLabel = article.doc && sameLang.length > 1 ? `<span class="lang-note">/${escapeHtml(article.doc)}/</span>` : "";
 			const pdf = article.pdf ? `<a class="secondary-link" href="/articles/${work.slug}/${article.pdf}">${escapeHtml(strings.readPdf)}</a>` : "";
 			const source = article.source ? `<a class="secondary-link" href="/articles/${work.slug}/${article.source}">${escapeHtml(strings.viewSource)}</a>` : "";
 			return `<li>
