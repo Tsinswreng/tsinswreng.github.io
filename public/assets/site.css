@@ -10,20 +10,23 @@
 
 :root {
 	--bg: #080a0e;
-	--bg-1: #0e1218;
-	--bg-2: #151b24;
-	--line: #232c39;
-	--line-soft: #1a222c;
-	--fg: #e9eff7;
-	--fg-2: #b2bfd0;
-	--fg-3: #7b8899;
-	--accent: #2fd6d6;
-	--accent-dim: #1c8f8f;
-	--accent-soft: rgb(47 214 214 / 12%);
-	--radius: 12px;
+	--bg-1: #10151c;
+	--bg-2: #1a222c;
+	--line: #384555;
+	--line-soft: #242e3a;
+	--fg: #f4f8fc;
+	--fg-2: #dae2ec;
+	--fg-3: #b3bfce;
+	--accent: #3ee0e0;
+	--accent-dim: #2aa8a8;
+	--accent-soft: rgb(62 224 224 / 14%);
+	/* 不用圓角矩形：形狀只有兩種，直角矩形，或中間矩形加兩邊半圓（999px）。 */
+	--radius: 0;
 	--shell: 76rem;
-	--chrome-font: system-ui, -apple-system, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
-	--serif-font: "Source Han Serif SC", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", SimSun, "Times New Roman", serif;
+	/* 全站帶襯線。人名另有 --name-font，優先 Noto Serif SC，其次交給 serif。 */
+	--serif-font: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "Times New Roman", serif;
+	--name-font: "Noto Serif SC", serif;
+	--chrome-font: var(--serif-font);
 	--mono-font: Consolas, "Cascadia Mono", "Noto Sans Mono CJK SC", monospace;
 
 	color-scheme: dark;
@@ -102,6 +105,11 @@ a {
 	box-shadow: 0 0 0.6rem var(--accent);
 }
 
+/* 人名一律用 --name-font。 */
+.name {
+	font-family: var(--name-font);
+}
+
 .nav-links {
 	display: flex;
 	flex-wrap: wrap;
@@ -139,7 +147,7 @@ a {
 	width: 1.9rem;
 	height: 1.9rem;
 	border: 1px solid var(--line);
-	border-radius: 8px;
+	border-radius: 999px;
 	background: var(--bg-1);
 	color: var(--fg-2);
 	font: inherit;
@@ -181,7 +189,7 @@ a {
 .site-hero {
 	padding: 3.5rem 0 2rem;
 	border-bottom: 1px solid var(--line-soft);
-	background: radial-gradient(60rem 20rem at 20% -6rem, rgb(47 214 214 / 8%), transparent 70%);
+	background: radial-gradient(60rem 20rem at 20% -6rem, rgb(62 224 224 / 9%), transparent 70%);
 }
 
 .site-hero h1 {
@@ -345,7 +353,7 @@ a {
 	gap: 0.4rem;
 	padding: 0.4rem 0.85rem;
 	border: 1px solid var(--line);
-	border-radius: 8px;
+	border-radius: 0;
 	background: var(--bg-2);
 	color: var(--fg);
 	font-size: 0.88rem;
@@ -393,7 +401,7 @@ a {
 	gap: 0.6rem;
 	padding: 0.6rem 0.85rem;
 	border: 1px solid var(--line-soft);
-	border-radius: 10px;
+	border-radius: 0;
 	background: var(--bg-1);
 }
 
@@ -542,6 +550,8 @@ a {
 	overflow-x: auto;
 	padding: 0;
 	background: transparent;
+	/* 正文前景色對齊 _Mvn/Article.css 的 ColorFore，不用站殼那支略暗的 --fg。 */
+	color: #fff;
 	font-family: var(--serif-font);
 	font-size: var(--mvn-em);
 	line-height: var(--mvn-line-height);
@@ -852,7 +862,7 @@ a {
 .pdf-button {
 	padding: 0.35rem 0.7rem;
 	border: 1px solid var(--line);
-	border-radius: 8px;
+	border-radius: 0;
 	background: var(--bg-2);
 	color: var(--fg);
 	font: inherit;

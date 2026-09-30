@@ -43,7 +43,7 @@ function go(direction: "back" | "forward"): void {
 <template>
 	<nav class="site-nav" :aria-label="strings.uiLanguage">
 		<div class="shell site-nav-inner">
-			<a class="brand" :href="navPath('home')">{{ strings.siteName }}</a>
+			<a class="brand name" :href="navPath('home')">{{ strings.siteName }}</a>
 			<div class="nav-links">
 				<a
 					v-for="item in nav"
@@ -78,6 +78,6 @@ function go(direction: "back" | "forward"): void {
 	</main>
 	<footer class="site-footer">
 		<p>{{ strings.footerNote }}</p>
-		<p>&copy; {{ new Date().getFullYear() }} {{ strings.siteName }}</p>
+		<p>&copy; {{ new Date().getFullYear() }} <span class="name">{{ strings.siteName }}</span></p>
 	</footer>
 </template>

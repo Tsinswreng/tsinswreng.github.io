@@ -132,7 +132,7 @@ function renderNav(locale, logical) {
 
 	return `<nav class="site-nav" aria-label="${escapeHtml(strings.uiLanguage)}">
       <div class="shell site-nav-inner">
-        <a class="brand" href="${homePath(locale)}">${escapeHtml(strings.siteName)}</a>
+        <a class="brand name" href="${homePath(locale)}">${escapeHtml(strings.siteName)}</a>
         <div class="nav-links">${links}</div>
         <div class="nav-tools">
           <button class="icon-button" type="button" data-history="back" title="${escapeHtml(strings.back)}" aria-label="${escapeHtml(strings.back)}">&#9664;</button>
@@ -147,7 +147,7 @@ function renderFooter(locale) {
 	const strings = text(locale);
 	return `<footer class="site-footer">
       <p>${escapeHtml(strings.footerNote)}</p>
-      <p>&copy; ${currentYear} ${escapeHtml(strings.siteName)}</p>
+      <p>&copy; ${currentYear} <span class="name">${escapeHtml(strings.siteName)}</span></p>
     </footer>`;
 }
 
@@ -311,12 +311,13 @@ ${toTopButton}${inlineScript(strings)}
 `;
 }
 
-function renderHero(locale, { compact, title, subtitle }) {
+function renderHero(locale, { compact, title, subtitle, isName }) {
+	// isName：這頁的大標題就是人名本身（首頁），故套 --name-font。
 	const heading = escapeHtml(title ?? text(locale).siteName);
 	const line = subtitle ? `<p>${escapeHtml(subtitle)}</p>` : "";
 	return `<header class="site-hero${compact ? " site-hero--compact" : ""}">
       <div class="shell">
-        <h1>${heading}</h1>
+        <h1${isName ? ' class="name"' : ""}>${heading}</h1>
         ${line}
       </div>
     </header>`;
@@ -442,7 +443,7 @@ for (const locale of localeOrder) {
 		navKey: "home",
 		title: strings.siteName,
 		description: strings.tagline,
-		hero: renderHero(locale, { title: strings.siteName, subtitle: strings.tagline }),
+		hero: renderHero(locale, { title: strings.siteName, subtitle: strings.tagline, isName: true }),
 		main: `        <section class="section">
           <div class="section-head">
             <h2>${escapeHtml(strings.latestArticles)}</h2>
