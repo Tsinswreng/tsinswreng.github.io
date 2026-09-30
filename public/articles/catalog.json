@@ -1,0 +1,160 @@
+{
+  "articles": [
+    {
+      "slug": "alt-nav",
+      "id": "AltNav",
+      "contentLang": "en",
+      "doc": "",
+      "title": "AltNav: Use Left Alt to Turn the Keyboard Center Area into Arrow Keys",
+      "body": "en/body.html",
+      "pdf": "en/article.pdf",
+      "source": "source/en/Main-en.typ",
+      "toc": [
+        {
+          "id": "1-Mappings",
+          "text": "1\u00A0| Mappings",
+          "level": 2
+        },
+        {
+          "id": "2-Features",
+          "text": "2\u00A0| Features",
+          "level": 2
+        },
+        {
+          "id": "3-Installation",
+          "text": "3\u00A0| Installation",
+          "level": 2
+        },
+        {
+          "id": "4-Design-Philosophy",
+          "text": "4\u00A0| Design Philosophy",
+          "level": 2
+        },
+        {
+          "id": "4-1-Key-Selection",
+          "text": "4.1\u00A0| Key Selection",
+          "level": 3
+        },
+        {
+          "id": "4-2-Direction-Order",
+          "text": "4.2\u00A0| Direction Order",
+          "level": 3
+        },
+        {
+          "id": "4-3-Long-Distance-Movement",
+          "text": "4.3\u00A0| Long-Distance Movement",
+          "level": 3
+        },
+        {
+          "id": "5-Known-Issues",
+          "text": "5\u00A0| Known Issues",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "slug": "alt-nav",
+      "id": "AltNav",
+      "contentLang": "zh-Hans",
+      "doc": "",
+      "title": "AltNav:\u7528\u5DE6Alt\u628A\u952E\u76D8\u4E2D\u5FC3\u533A\u53D8\u6210\u65B9\u5411\u952E",
+      "body": "zh-Hans/body.html",
+      "pdf": "zh-Hans/article.pdf",
+      "source": "source/zh-Hans/Main.typ",
+      "toc": [
+        {
+          "id": "1-\u6620\u5C04",
+          "text": "1\u00A0| \u6620\u5C04",
+          "level": 2
+        },
+        {
+          "id": "2-\u7279\u70B9",
+          "text": "2\u00A0| \u7279\u70B9",
+          "level": 2
+        },
+        {
+          "id": "3-\u5B89\u88C5",
+          "text": "3\u00A0| \u5B89\u88C5",
+          "level": 2
+        },
+        {
+          "id": "4-\u8BBE\u8BA1\u54F2\u5B66",
+          "text": "4\u00A0| \u8BBE\u8BA1\u54F2\u5B66",
+          "level": 2
+        },
+        {
+          "id": "4-1-\u6309\u952E\u9009\u53D6",
+          "text": "4.1\u00A0| \u6309\u952E\u9009\u53D6",
+          "level": 3
+        },
+        {
+          "id": "4-2-\u65B9\u5411\u987A\u5E8F",
+          "text": "4.2\u00A0| \u65B9\u5411\u987A\u5E8F",
+          "level": 3
+        },
+        {
+          "id": "4-3-\u957F\u8DDD\u79FB\u52A8",
+          "text": "4.3\u00A0| \u957F\u8DDD\u79FB\u52A8",
+          "level": 3
+        },
+        {
+          "id": "5-\u5DF2\u77E5\u95EE\u9898",
+          "text": "5\u00A0| \u5DF2\u77E5\u95EE\u9898",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "slug": "alt-nav",
+      "id": "AltNav",
+      "contentLang": "zh-Hant",
+      "doc": "",
+      "title": "AltNav:\u7528\u5DE6Alt\u628A\u9375\u76E4\u4E2D\u5FC3\u5340\u8B8A\u6210\u65B9\u5411\u9375",
+      "body": "zh-Hant/body.html",
+      "pdf": "zh-Hant/article.pdf",
+      "source": "source/zh-Hant/Main.typ",
+      "toc": [
+        {
+          "id": "1-\u6620\u5C04",
+          "text": "1\u00A0| \u6620\u5C04",
+          "level": 2
+        },
+        {
+          "id": "2-\u7279\u9EDE",
+          "text": "2\u00A0| \u7279\u9EDE",
+          "level": 2
+        },
+        {
+          "id": "3-\u5B89\u88DD",
+          "text": "3\u00A0| \u5B89\u88DD",
+          "level": 2
+        },
+        {
+          "id": "4-\u8A2D\u8A08\u54F2\u5B78",
+          "text": "4\u00A0| \u8A2D\u8A08\u54F2\u5B78",
+          "level": 2
+        },
+        {
+          "id": "4-1-\u6309\u9375\u9078\u53D6",
+          "text": "4.1\u00A0| \u6309\u9375\u9078\u53D6",
+          "level": 3
+        },
+        {
+          "id": "4-2-\u65B9\u5411\u9806\u5E8F",
+          "text": "4.2\u00A0| \u65B9\u5411\u9806\u5E8F",
+          "level": 3
+        },
+        {
+          "id": "4-3-\u9577\u8DDD\u79FB\u52D5",
+          "text": "4.3\u00A0| \u9577\u8DDD\u79FB\u52D5",
+          "level": 3
+        },
+        {
+          "id": "5-\u5DF2\u77E5\u554F\u984C",
+          "text": "5\u00A0| \u5DF2\u77E5\u554F\u984C",
+          "level": 2
+        }
+      ]
+    }
+  ]
+}

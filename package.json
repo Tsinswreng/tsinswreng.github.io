@@ -4,14 +4,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "build:site": "node tools/build-site.mjs",
+    "check:site": "node tools/check-site.mjs",
+    "build": "vue-tsc --noEmit && vite build && node tools/build-site.mjs && node tools/check-site.mjs",
+    "preview": "node tools/serve.mjs dist"
   },
   "dependencies": {
     "pdfjs-dist": "^6.2.108",
     "vue": "^3.5.18"
   },
   "devDependencies": {
+    "@types/node": "^26.6.3",
     "@vitejs/plugin-vue": "^6.0.1",
     "typescript": "^5.9.2",
     "vite": "^7.1.3",

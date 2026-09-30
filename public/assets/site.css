@@ -1,0 +1,926 @@
+/* 本站唯一樣式檔。所有頁面（生成的靜態頁與 Vite 建置的互動頁）都只引用這一份。
+   分兩大段：
+     一、站殼：導航、頁首、卡片、清單、閱讀版面、頁腳。這一段是本站自己的設計。
+     二、文章正文：作用域限於 .article-body，數值以 Mvn 的 _Mvn/Article.css 為準，
+         兩邊必須逐條對應，改一邊要改另一邊（源頭是 _Mvn/_Common.typ 的 PDF 靶）。
+   兩個容易混的詞：
+     站臺語言 = 界面文字的語言；內容語言 = 文章正文自己的語言。 */
+
+/* ── 一、站殼 ─────────────────────────────────────────────── */
+
+:root {
+	--bg: #080a0e;
+	--bg-1: #0e1218;
+	--bg-2: #151b24;
+	--line: #232c39;
+	--line-soft: #1a222c;
+	--fg: #e9eff7;
+	--fg-2: #b2bfd0;
+	--fg-3: #7b8899;
+	--accent: #2fd6d6;
+	--accent-dim: #1c8f8f;
+	--accent-soft: rgb(47 214 214 / 12%);
+	--radius: 12px;
+	--shell: 76rem;
+	--chrome-font: system-ui, -apple-system, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+	--serif-font: "Source Han Serif SC", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", SimSun, "Times New Roman", serif;
+	--mono-font: Consolas, "Cascadia Mono", "Noto Sans Mono CJK SC", monospace;
+
+	color-scheme: dark;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--bg);
+	scroll-behavior: smooth;
+	scroll-padding-top: 5.5rem;
+}
+
+body {
+	min-width: 320px;
+	margin: 0;
+	background: var(--bg);
+	color: var(--fg);
+	font-family: var(--chrome-font);
+	font-size: 16px;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.shell {
+	width: 100%;
+	max-width: var(--shell);
+	margin: 0 auto;
+	padding: 0 1.25rem;
+}
+
+/* 頂欄。黏頂、半透明、細底線，導航不再用一整排方框。 */
+.site-nav {
+	position: sticky;
+	top: 0;
+	z-index: 20;
+	border-bottom: 1px solid var(--line-soft);
+	background: rgb(8 10 14 / 82%);
+	backdrop-filter: blur(10px);
+}
+
+.site-nav-inner {
+	display: flex;
+	align-items: center;
+	gap: 1.25rem;
+	min-height: 3.5rem;
+}
+
+.brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	white-space: nowrap;
+}
+
+.brand::before {
+	content: "";
+	width: 0.55rem;
+	height: 0.55rem;
+	border-radius: 50%;
+	background: var(--accent);
+	box-shadow: 0 0 0.6rem var(--accent);
+}
+
+.nav-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+	margin-inline-end: auto;
+}
+
+.nav-links a {
+	padding: 0.25rem 0.6rem;
+	border-radius: 999px;
+	color: var(--fg-2);
+	font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+	background: var(--bg-2);
+	color: var(--fg);
+}
+
+.nav-links a[aria-current="page"] {
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.nav-tools {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.icon-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.9rem;
+	height: 1.9rem;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: var(--bg-1);
+	color: var(--fg-2);
+	font: inherit;
+	font-size: 0.85rem;
+	cursor: pointer;
+}
+
+.icon-button:hover {
+	border-color: var(--accent-dim);
+	color: var(--accent);
+}
+
+.locale-switch {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+}
+
+.locale-switch a {
+	padding: 0.15rem 0.45rem;
+	border: 1px solid var(--line-soft);
+	border-radius: 999px;
+	color: var(--fg-3);
+	font-size: 0.78rem;
+}
+
+.locale-switch a:hover {
+	border-color: var(--accent-dim);
+	color: var(--accent);
+}
+
+.locale-switch a[aria-current="true"] {
+	border-color: var(--accent-dim);
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+/* 頁首。首頁放大，其餘頁面用同一套但收窄。 */
+.site-hero {
+	padding: 3.5rem 0 2rem;
+	border-bottom: 1px solid var(--line-soft);
+	background: radial-gradient(60rem 20rem at 20% -6rem, rgb(47 214 214 / 8%), transparent 70%);
+}
+
+.site-hero h1 {
+	margin: 0 0 0.6rem;
+	font-family: var(--serif-font);
+	font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: 0.01em;
+}
+
+.site-hero p {
+	max-width: 44rem;
+	margin: 0;
+	color: var(--fg-2);
+}
+
+.site-hero--compact {
+	padding: 2rem 0 1.25rem;
+	background: none;
+}
+
+.site-hero--compact h1 {
+	font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem);
+}
+
+.site-main {
+	padding: 2rem 0 4rem;
+}
+
+.site-footer {
+	margin-top: auto;
+	padding: 1.75rem 0 2.5rem;
+	border-top: 1px solid var(--line-soft);
+	color: var(--fg-3);
+	font-size: 0.85rem;
+}
+
+.site-footer p {
+	max-width: var(--shell);
+	margin: 0 auto 0.35rem;
+	padding: 0 1.25rem;
+}
+
+.page-body {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+/* 區塊與卡片 */
+.section + .section {
+	margin-top: 2.5rem;
+}
+
+.section-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.section-head h2 {
+	margin: 0;
+	font-family: var(--serif-font);
+	font-size: 1.35rem;
+}
+
+.section-head .count {
+	color: var(--fg-3);
+	font-size: 0.85rem;
+}
+
+.card {
+	padding: 1.1rem 1.25rem;
+	border: 1px solid var(--line-soft);
+	border-radius: var(--radius);
+	background: var(--bg-1);
+}
+
+.card + .card {
+	margin-top: 0.75rem;
+}
+
+.card-list {
+	display: grid;
+	gap: 0.75rem;
+}
+
+.hint {
+	margin: 0 0 1rem;
+	color: var(--fg-3);
+	font-size: 0.9rem;
+}
+
+/* 文章條目 */
+.article-item {
+	display: block;
+	padding: 1.1rem 1.25rem;
+	border: 1px solid var(--line-soft);
+	border-radius: var(--radius);
+	background: var(--bg-1);
+	transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.article-item:hover {
+	border-color: var(--accent-dim);
+	transform: translateY(-1px);
+}
+
+.article-item h3 {
+	margin: 0 0 0.5rem;
+	font-family: var(--serif-font);
+	font-size: 1.15rem;
+	line-height: 1.4;
+}
+
+.article-item .summary {
+	margin: 0.5rem 0 0;
+	color: var(--fg-2);
+	font-size: 0.92rem;
+}
+
+.meta-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	align-items: center;
+}
+
+.badge {
+	padding: 0.1rem 0.5rem;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	color: var(--fg-2);
+	font-size: 0.78rem;
+}
+
+.badge--lang {
+	border-color: var(--accent-dim);
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.badge--time {
+	color: var(--fg-3);
+}
+
+/* 按鈕 */
+.button-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+
+.button-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.4rem 0.85rem;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: var(--bg-2);
+	color: var(--fg);
+	font-size: 0.88rem;
+}
+
+.button-link:hover {
+	border-color: var(--accent-dim);
+	color: var(--accent);
+}
+
+.button-link--primary {
+	border-color: var(--accent-dim);
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.secondary-link {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.4rem 0.2rem;
+	color: var(--fg-2);
+	font-size: 0.88rem;
+	text-decoration: underline;
+	text-decoration-color: var(--line);
+	text-underline-offset: 0.25em;
+}
+
+.secondary-link:hover {
+	color: var(--accent);
+}
+
+/* 語言清單（單篇入口頁） */
+.lang-list {
+	display: grid;
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lang-list li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.6rem 0.85rem;
+	border: 1px solid var(--line-soft);
+	border-radius: 10px;
+	background: var(--bg-1);
+}
+
+.lang-list .lang-name {
+	font-weight: 600;
+}
+
+.lang-list .lang-note {
+	color: var(--fg-3);
+	font-size: 0.85rem;
+}
+
+/* 閱讀版面：左目錄、右正文。窄螢幕時目錄收到正文上方。 */
+.reading-layout {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2rem;
+}
+
+@media (min-width: 64rem) {
+	.reading-layout {
+		grid-template-columns: 15rem minmax(0, 1fr);
+		gap: 3rem;
+		align-items: start;
+	}
+}
+
+.toc {
+	border: 1px solid var(--line-soft);
+	border-radius: var(--radius);
+	background: var(--bg-1);
+	padding: 0.9rem 1rem;
+	font-size: 0.86rem;
+}
+
+@media (min-width: 64rem) {
+	.toc {
+		position: sticky;
+		top: 4.5rem;
+		max-height: calc(100vh - 6rem);
+		overflow: auto;
+	}
+}
+
+.toc h2 {
+	margin: 0 0 0.6rem;
+	color: var(--fg-3);
+	font-size: 0.78rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.toc ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.toc a {
+	display: block;
+	padding: 0.2rem 0;
+	color: var(--fg-2);
+	line-height: 1.35;
+}
+
+.toc a:hover {
+	color: var(--accent);
+}
+
+.toc .toc-3 {
+	padding-inline-start: 0.85rem;
+	color: var(--fg-3);
+}
+
+/* 目錄當前位置：由頁面腳本的 IntersectionObserver 標記，沒有 JS 時只是少了這層提示。 */
+.toc a.is-active {
+	color: var(--accent);
+	font-weight: 600;
+}
+
+.reading {
+	min-width: 0;
+}
+
+.reading-head {
+	padding-bottom: 1.25rem;
+	margin-bottom: 1.5rem;
+	border-bottom: 1px solid var(--line-soft);
+}
+
+.reading-head h1 {
+	margin: 0 0 0.75rem;
+	font-family: var(--serif-font);
+	font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.3rem);
+	line-height: 1.3;
+}
+
+.reading-foot {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 0.75rem;
+	margin-top: 2.5rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--line-soft);
+	font-size: 0.9rem;
+}
+
+/* 回到頂部：長正文才有，由頁面腳本控制出現時機。 */
+.to-top {
+	position: fixed;
+	right: 1.25rem;
+	bottom: 1.25rem;
+	z-index: 30;
+	display: grid;
+	place-items: center;
+	width: 2.5rem;
+	height: 2.5rem;
+	border: 1px solid var(--line);
+	border-radius: 50%;
+	background: var(--bg-1);
+	color: var(--fg-2);
+	font-size: 1rem;
+	cursor: pointer;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.to-top.is-visible {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.to-top:hover {
+	border-color: var(--accent);
+	color: var(--accent);
+}
+
+/* ── 二、文章正文（與 _Mvn/Article.css 同步） ────────────────
+   文章樣式來源是 Mvn 的 _Mvn/_Common.typ（PDF 靶實測），_Mvn/Article.css 是 HTML 靶的同一套值。
+   改一邊必須改另一邊。--mvn-em 就是 PDF 靶的 1em = 1.5em × 11pt = 16.5pt。 */
+
+.article-body {
+	overflow-x: auto;
+	padding: 0;
+	background: transparent;
+	font-family: var(--serif-font);
+	font-size: var(--mvn-em);
+	line-height: var(--mvn-line-height);
+	--mvn-em: 16.5pt;
+	--mvn-line-height: 1.727;
+	--mvn-code-em: calc(0.8 * var(--mvn-em));
+	--mvn-code-line-height: 1.648;
+	--mvn-line-box: 0.74;
+	--mvn-line-slack: calc((var(--mvn-line-height) - var(--mvn-line-box)) * var(--mvn-em) / 2);
+	--mvn-code-line-slack: calc((var(--mvn-code-line-height) - var(--mvn-line-box)) * var(--mvn-code-em) / 2);
+}
+
+.article-body > :first-child {
+	margin-top: 0;
+}
+
+.article-body a {
+	color: #00cccc;
+}
+
+.article-body strong {
+	color: #00ffff;
+}
+
+.article-body img {
+	max-width: 100%;
+	height: auto;
+}
+
+/* 下列 margin 都已減去一條行距：Typst 的間距含行距，CSS 的 line-height 也含，
+   兩邊都寫原值就會多出一份。 */
+.article-body h1,
+.article-body h2,
+.article-body h3,
+.article-body h4,
+.article-body h5,
+.article-body h6 {
+	margin: calc(0.5 * var(--mvn-em)) 0;
+	font-weight: 700;
+}
+
+/* 匯入器把題名搬去頁首，文章內不出現 h1；一級標題是 h2（PDF 居中）。 */
+.article-body h2 {
+	font-size: 1.4em;
+	text-align: center;
+}
+
+.article-body h3 {
+	font-size: 1.2em;
+}
+
+.article-body h4,
+.article-body h5,
+.article-body h6 {
+	font-size: 1em;
+}
+
+/* 目錄跳過來時標題不要被黏頂的導航蓋住。 */
+.article-body :is(h2, h3, h4) {
+	scroll-margin-top: 5rem;
+}
+
+/* 標題編號「N |」的上色 span 由 _Common.typ 在 HTML 靶輸出。 */
+.article-body .mvn-heading-num {
+	color: #e6e6e6;
+}
+
+.article-body .mvn-heading-bar {
+	color: #00aaaa;
+	font-size: 1.2em;
+}
+
+.article-body p {
+	margin: calc(1.5 * var(--mvn-em)) 0;
+}
+
+.article-body .mvn-article > p {
+	text-indent: calc(2 * var(--mvn-em));
+}
+
+.article-body ul,
+.article-body ol {
+	margin: calc(0.2 * var(--mvn-em)) 0;
+	padding-inline-start: calc(1.5 * var(--mvn-em));
+}
+
+.article-body li::marker {
+	color: #e6e6e6;
+}
+
+.article-body figure {
+	margin: calc(0.2 * var(--mvn-em)) 0;
+	text-align: center;
+}
+
+.article-body figcaption {
+	margin-top: calc(0.5 * var(--mvn-em));
+	color: #d7d7d7;
+	font-size: 0.9em;
+}
+
+.article-body table {
+	border-collapse: collapse;
+}
+
+.article-body th,
+.article-body td {
+	padding: 0.25em 0.5em;
+	border: 1px solid #fff;
+}
+
+/* 代碼字號實測是正文的 0.8em（13.2pt）；--mvn-code-em 即它。
+   語言標籤的 0.8em 也錨在代碼字號上（實測 10.56pt），故再乘一次。
+   --mvn-line-slack 是 CSS 行框比 Typst 行框多出的半行距，塊狀元素的內距要扣掉。 */
+.article-body .mvn-code-block {
+	margin: calc(0.2 * var(--mvn-em)) 0;
+	padding: calc(0.75 * var(--mvn-code-em) - var(--mvn-code-line-slack)) calc(0.75 * var(--mvn-code-em));
+	border: 1pt solid #006060;
+	background: #002020;
+	font-size: var(--mvn-code-em);
+}
+
+.article-body pre {
+	overflow-x: auto;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: none;
+	color: #fff;
+}
+
+.article-body code {
+	overflow-wrap: anywhere;
+	font-family: var(--mono-font);
+	font-size: var(--mvn-code-em);
+}
+
+.article-body :not(pre) > code {
+	padding: 0 calc(0.4 * var(--mvn-code-em));
+	border-radius: 0;
+	background: #004040;
+	color: #fff;
+}
+
+.article-body .mvn-code-block code {
+	padding: 0;
+	background: none;
+	color: #fff;
+	line-height: var(--mvn-code-line-height);
+}
+
+/* 語言標籤：讀 code 的 data-lang，故未重建的舊頁面也會有標籤。 */
+.article-body code[data-lang]::before {
+	display: block;
+	padding-bottom: calc(0.4 * var(--mvn-code-em));
+	color: #00cccc;
+	font-size: calc(0.8 * var(--mvn-code-em));
+	line-height: var(--mvn-line-box);
+	text-align: right;
+	content: attr(data-lang);
+}
+
+/* 引用塊：_Common.typ 的 HTML 靶輸出 div.mvn-quote，PDF 只有左側 3pt 粗線。 */
+.article-body .mvn-quote {
+	margin: 0;
+	padding: calc(0.75 * var(--mvn-em) - var(--mvn-line-slack)) calc(0.75 * var(--mvn-em)) calc(0.75 * var(--mvn-em) - var(--mvn-line-slack)) calc(1 * var(--mvn-em));
+	border-left: 3pt solid #008888;
+	background: #002020;
+}
+
+.article-body .mvn-quote > :first-child {
+	margin-top: 0;
+}
+
+.article-body .mvn-quote > :last-child {
+	margin-bottom: 0;
+}
+
+/* 概念鏈詞條。Typst 側見 hvv-attack.typ 的 MkTerm 與 _Common.typ 的 show ref。
+   詞條名走 #H，編號與豎線由全局標題規則給出；這段只補 HTML 導出會丟掉的部分。 */
+.article-body .mvn-term {
+	margin: calc(1.1 * var(--mvn-em) - var(--mvn-line-slack)) 0;
+	padding: 0.2em calc(0.2 * var(--mvn-em)) 0.2em calc(1 * var(--mvn-em));
+	border-left: 3pt solid #008888;
+}
+
+.article-body .mvn-term > :first-child {
+	margin-top: 0;
+}
+
+.article-body .mvn-term > :last-child {
+	margin-bottom: 0;
+}
+
+.article-body .mvn-term > p {
+	text-indent: calc(2 * var(--mvn-em));
+}
+
+.article-body .mvn-term-ref,
+.article-body .mvn-term-ref span {
+	text-decoration: none;
+}
+
+.article-body .mvn-term-ref a,
+.article-body .mvn-term-ref span {
+	font-weight: 700;
+}
+
+/* 以下兩項是本站加上去的，不在 _Mvn/Article.css 的同步範圍內：
+   標題錨點由匯入器寫進正文片段，複製按鈕由頁面腳本加上（沒有 JS 時不存在）。 */
+.article-body :is(h1, h2, h3, h4, h5, h6) {
+	position: relative;
+}
+
+/* 絕對定位且不指定 inset，故落在文字後方的靜態位置，只是不撐開標題寬度：
+   標題是置中的，多一個字元寬會讓整行偏左。 */
+.article-body .heading-anchor {
+	position: absolute;
+	margin-inline-start: 0.35em;
+	color: var(--fg-3);
+	font-size: 0.72em;
+	font-weight: 400;
+	opacity: 0;
+	transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.article-body :is(h1, h2, h3, h4, h5, h6):hover .heading-anchor,
+.article-body .heading-anchor:focus-visible {
+	opacity: 1;
+}
+
+.article-body .heading-anchor:hover {
+	color: var(--accent);
+}
+
+.article-body .mvn-code-block,
+.article-body .code-block {
+	position: relative;
+}
+
+.article-body .copy-button {
+	position: absolute;
+	right: calc(0.5 * var(--mvn-code-em));
+	bottom: calc(0.4 * var(--mvn-code-em));
+	padding: 0.05rem 0.5rem;
+	border: 1px solid #00cccc;
+	border-radius: 999px;
+	background: #002020;
+	color: #00cccc;
+	font-family: var(--chrome-font);
+	font-size: 0.72rem;
+	line-height: 1.7;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity 0.15s ease;
+}
+
+.article-body .mvn-code-block:hover .copy-button,
+.article-body .code-block:hover .copy-button,
+.article-body .copy-button:focus-visible,
+.article-body .copy-button.is-done {
+	opacity: 1;
+}
+
+/* ── 三、PDF 閱讀器（clean-disk 的概念驗證頁） ─────────────── */
+
+.pdf-article-shell {
+	overflow: visible;
+}
+
+.pdf-viewer {
+	border: 1px solid var(--line-soft);
+	border-radius: var(--radius);
+	background: var(--bg-1);
+	overflow: hidden;
+}
+
+.pdf-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	padding: 0.75rem 1rem;
+	border-bottom: 1px solid var(--line-soft);
+}
+
+.pdf-page-controls,
+.pdf-zoom-controls {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.pdf-page-status {
+	min-width: 6.5rem;
+	color: var(--fg-2);
+	text-align: center;
+}
+
+.pdf-zoom-status {
+	min-width: 3.25rem;
+	color: var(--fg-2);
+	text-align: center;
+}
+
+.pdf-button {
+	padding: 0.35rem 0.7rem;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: var(--bg-2);
+	color: var(--fg);
+	font: inherit;
+	font-size: 0.85rem;
+	cursor: pointer;
+}
+
+.pdf-button:hover,
+.pdf-button:focus-visible {
+	border-color: var(--accent-dim);
+	color: var(--accent);
+}
+
+.pdf-button:disabled {
+	cursor: not-allowed;
+	opacity: 0.45;
+}
+
+.pdf-canvas-area {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 40rem;
+	overflow: auto;
+	padding: 1rem;
+	background: #05070a;
+}
+
+.pdf-canvas {
+	display: block;
+	max-width: none;
+	box-shadow: 0 8px 24px rgb(0 0 0 / 55%);
+}
+
+.pdf-error {
+	color: #fecaca;
+}
+
+.pdf-retry {
+	margin-left: 1rem;
+}
+
+@media (max-width: 40rem) {
+	.site-nav-inner {
+		flex-wrap: wrap;
+		padding: 0.5rem 0;
+	}
+
+	.nav-links {
+		margin-inline-end: 0;
+	}
+
+	.site-hero {
+		padding: 2.25rem 0 1.5rem;
+	}
+
+	.pdf-toolbar {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.pdf-page-controls,
+	.pdf-zoom-controls {
+		justify-content: center;
+	}
+
+	.pdf-canvas-area {
+		min-height: 24rem;
+		padding: 0.5rem;
+	}
+}

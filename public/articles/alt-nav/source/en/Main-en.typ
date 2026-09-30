@@ -5,11 +5,12 @@ typst compile --root . \
 --format bundle \
 --features bundle,html \
 --input bundle=true \
-AltNav/Main.typ AltNav/dist
+AltNav/en/Main-en.typ AltNav/dist
  */
 
-#import "../_Common.typ": *
-#import "./Keyboard.typ": Keyboard_AltNav
+#import "../../_Common.typ": *
+// 鍵盤圖的繪製源留在項目根，兩個語言目錄共用同一份。
+#import "../Keyboard.typ": Keyboard_AltNav
 #show: _Show
 
 #let ImgGen = FnImgGen("AltNav/assets/")

@@ -16,8 +16,11 @@ typst compile `
   AltNav/Keyboard.typ `
   AltNav/assets/Keyboard_AltNav.gen.svg
  */
-#import "../_Common.typ": *
+//#import "../_Common.typ": *
 
+//Todo[應在typst中尋有無API之在作用域內清除默認樣式][]
+#let ColorBack = black
+#let ColorFore = white
 #let Keyboard_AltNav = [
 	#set text(size: 0.39cm)
 	#let BaseWidth = 3em
@@ -217,5 +220,5 @@ typst compile `
 
 ]
 
-#show: _Show
+//#show: _Show
 #Keyboard_AltNav

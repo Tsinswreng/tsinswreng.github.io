@@ -5,17 +5,19 @@ typst compile --root . \
 --format bundle \
 --features bundle,html \
 --input bundle=true \
-AltNav/Main.typ AltNav/dist
+AltNav/zh-Hant/Main.typ AltNav/dist
  */
 
-#import "../_Common.typ": *
-#import "./Keyboard.typ": Keyboard_AltNav
+#import "../../_Common.typ": *
+// 鍵盤圖的繪製源留在項目根，兩個語言目錄共用同一份。
+#import "../Keyboard.typ": Keyboard_AltNav
 #show: _Show
 
 #let ImgGen = FnImgGen("AltNav/assets/")
 #let Img = ImgPath.with(Base: "AltNav")
 
 #_Document("AltNav.pdf")[
+
 	#title[AltNav:用左Alt把鍵盤中心區變成方向鍵]
 
 	#P[
@@ -72,8 +74,8 @@ AltNav/Main.typ AltNav/dist
 				不止局限于某一應用
 			]
 		- #[移动步長分爲 1、4、16 三檔,
-			兼顧精確與快速定位
-		]
+				兼顧精確與快速定位
+			]
 	]
 
 	#H[安裝][
@@ -90,12 +92,17 @@ AltNav/Main.typ AltNav/dist
 				`JKL;`參照了Vim的方向鍵設計。
 				但Vim原先的方向鍵順序是`H`、`J`、`K`、`L` 分別對應`左`、`下`、`上`、`右`。
 				但一般手指搭在鍵盤上時,
-				右手食指是放在`J`鍵上的。
+				右手食指是放在`J`鍵上的,
+				如@打字指法。
 				若要保持右手食指放在`J`鍵上不動,
 				同時放四根手指在四個鍵上、則只有`JKL;`最適合。
-				#Img("assets/2026-08-20-16-36-34.png")
+				//#Img("assets/2026-08-20-16-36-34.png")
+				#figure(
+					Img("assets/2026-08-24-21-07-37.png"),
+					caption: [打字指法],
+				)<打字指法>
 			]
-			
+
 			#P[
 				設計`Home`/`End`的映射時,
 				有兩種方案。
@@ -103,7 +110,7 @@ AltNav/Main.typ AltNav/dist
 				即`左Alt`+`I`/`O`;
 				方案B是`左Alt`+`H`/`'`。
 			]
-			
+
 			#P[
 				方案B在語義上更佳,
 				`Home`,`←`,`↓`,`↑`,`→`,`End`成一線。
@@ -127,7 +134,9 @@ AltNav/Main.typ AltNav/dist
 				+ #[下、上 鍵 分別由 中指 和 無名指 負責。
 						這兩根手指按壓力量較大,
 						適合頻繁上下跳行翻閱內容的場景]
-
+			]
+			
+			#P[
 				也有兩個壞處:
 				+ #[右方向鍵 使用頻率更高但由力量小拇指負責]
 				+ #[這個順序乍一看有點反直覺。
@@ -137,6 +146,7 @@ AltNav/Main.typ AltNav/dist
 						若按`左`,`右`,`上`,`下`這樣橫向和縱向各自排列在一起的順序看起來更直覺一些。
 					]
 			]
+
 		]
 
 		#H[長距移動][
@@ -147,7 +157,7 @@ AltNav/Main.typ AltNav/dist
 				任意移動距離都可以用 ±1、±4、±16 組合出來。
 				這相當於用四進位分解移動距離：每個較大的步長都能減少總擊鍵次數，同時保留單步移動提供的精確性。
 			]
-			
+
 			#P[
 				在鍵位選取上,
 				從`JKL;`到`NM,.`相當於上下平移,
@@ -158,8 +168,8 @@ AltNav/Main.typ AltNav/dist
 			]
 		]
 	]
-	
+
 	#H[已知問題][
-		在遠程控制軟件/虛擬機下時此腳本可能不能正常工作
+		#P[在遠程控制軟件/虛擬機下時此腳本可能不能正常工作]
 	]
 ]

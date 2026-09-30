@@ -1,0 +1,8 @@
+{
+	"_comment": "人手維護的站點側文章資料，鍵是 Mvn manifest 的 Slug。機器推不出來的欄位放這裏：date（YYYY-MM-DD，用於排序）、summary（列表頁摘要）、tags（陣列，暫未顯示）。留空即不顯示、不參與排序。",
+	"alt-nav": {
+		"date": "",
+		"summary": "受 Vim 方向鍵設計啟發的 AutoHotkey 腳本：按住左 Alt，把鍵盤中心區的 JKL; 等鍵映射成方向鍵與光標跳轉。",
+		"tags": ["AutoHotkey", "鍵盤"]
+	}
+}
