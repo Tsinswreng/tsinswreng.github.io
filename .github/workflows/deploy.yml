@@ -34,7 +34,7 @@ concurrency:
 
 # 工作流程由兩個工作（job）構成：先 build，再 deploy。
 jobs:
-  # 第一個工作：將 Astro 原始碼建置成可直接給瀏覽器使用的靜態檔案。
+  # 第一個工作：把網站建置成可直接給瀏覽器使用的靜態檔案。
   build:
     # 使用 GitHub 提供、預先安裝常用工具的最新版 Ubuntu 虛擬機。
     runs-on: ubuntu-latest
@@ -57,9 +57,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 執行 package.json 中的 build 指令，即 `vue-tsc --noEmit && vite build`。
-      # Vue 型別檢查通過後，Vite 會將各個 Vue 頁面建置為 dist/ 中的靜態檔。
-      - name: Build Vue site
+      # 執行 package.json 中的 build 指令，即
+      # `vue-tsc --noEmit && vite build && node tools/build-site.mjs`。
+      # Vue 型別檢查通過後，Vite 建置互動頁，再由 tools/build-site.mjs 依
+      # public/articles/catalog.json 生成首頁、文章總覽、單篇入口與正文等靜態頁。
+      - name: Build site
         run: npm run build
 
       # 將 dist/ 打包並交給 GitHub Pages，供下一個 deploy 工作使用。

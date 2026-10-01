@@ -11,7 +11,8 @@
     "noEmit": true,
     "strict": true,
     "jsx": "preserve",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "allowJs": true
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts"]
+  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts", "site.config.mjs"]
 }
