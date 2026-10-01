@@ -1,6 +1,6 @@
 // 將 Mvn 已構建的文檔匯入本站 public/articles；不編譯 Typst，也不推送 Git。
 // dotnet script tools/ImportMvnPublish.csx <path-to-published-manifest.json>
-#r "nuget: Tsinswreng.CsSh, 0.2.0-alpha"
+#r "nuget: Tsinswreng.CsSh, 0.3.0-alpha"
 #r "nuget: AngleSharp, 1.7.0"
 
 #nullable enable
@@ -25,7 +25,7 @@ if (Args.Count != 1) {
 }
 
 try {
-	await Import(Tsinswreng.CsSh.ShGlobal.Sh.FullPath(Args[0]), Ct);
+	await Import(FullPath(Args[0]), Ct);
 }
 catch (Exception Error) {
 	await Write(Stderr, $"ImportMvnPublish: {Error.Message}{Environment.NewLine}", Ct);
@@ -34,7 +34,7 @@ catch (Exception Error) {
 
 async Task Import(Pth ManifestPath, CT Ct) {
 	// 從腳本位置定位網站根目錄，避免呼叫者的工作目錄改變網站輸出位置。
-	var SiteRoot = Tsinswreng.CsSh.ShGlobal.Sh.FullPath(CsxDir() / Config.ParentDirectoryName);
+	var SiteRoot = FullPath(CsxDir() / Config.ParentDirectoryName);
 	var PublicRoot = SiteRoot / Config.PublicDirectoryName;
 	var ArticlesRoot = PublicRoot / Config.ArticlesDirectoryName;
 	if (!IsFile(ManifestPath) || !string.Equals(BaseName(ManifestPath), Config.ManifestFileName, StringComparison.OrdinalIgnoreCase)) {
@@ -352,8 +352,8 @@ async Task ReplaceArticle(Pth Stage, Pth Destination, Pth ArticlesRoot, CT Ct) {
 
 Pth RequireUnder(Pth Candidate, Pth Parent) {
 	// Cssh 的 FullPath 統一絕對路徑；額外相對路徑檢查保護刪除與複製目標不越出受管目錄。
-	var FullCandidate = Tsinswreng.CsSh.ShGlobal.Sh.FullPath(Candidate);
-	var FullParent = Tsinswreng.CsSh.ShGlobal.Sh.FullPath(Parent);
+	var FullCandidate = FullPath(Candidate);
+	var FullParent = FullPath(Parent);
 	if (!IsUnder(FullCandidate, FullParent)) {
 		throw new Exception($"path escapes its expected root: {Candidate}");
 	}
@@ -362,8 +362,8 @@ Pth RequireUnder(Pth Candidate, Pth Parent) {
 
 bool IsUnder(Pth Candidate, Pth Parent) {
 	var Relative = Path.GetRelativePath(
-		Tsinswreng.CsSh.ShGlobal.Sh.FullPath(Parent).Value,
-		Tsinswreng.CsSh.ShGlobal.Sh.FullPath(Candidate).Value);
+		FullPath(Parent).Value,
+		FullPath(Candidate).Value);
 	return Relative != Config.ParentDirectoryName
 		&& !Relative.StartsWith(Config.ParentDirectoryName + Path.DirectorySeparatorChar, StringComparison.Ordinal)
 		&& !Path.IsPathRooted(Relative);
